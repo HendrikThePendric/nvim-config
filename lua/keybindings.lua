@@ -1,29 +1,11 @@
--- local keymap = vim.api.nvim_set_keymap
--- -- Ctrl-s to save
--- keymap('n', '<c-s>', ':w<CR>', {})
--- keymap('i', '<c-s>', '<Esc>:w<CR>a', {})
--- -- Ctrl jhkl to navigate splits
--- keymap('n', '<c-j>', '<c-w>j', { noremap = true })
--- keymap('n', '<c-h>', '<c-w>h', { noremap = true })
--- keymap('n', '<c-k>', '<c-w>k', { noremap = true })
--- keymap('n', '<c-l>', '<c-w>l', { noremap = true })
--- WhichKey
--- keymap("n", "<leader>",      [[:<c-u>WhichKey ','<CR>]],       { silent = true })
--- keymap("n", "<space>",       [[:<c-u>WhichKey '<space>'<CR>]], { silent = true })
--- keymap("n", "<localleader>", [[:<c-u>WhichKey "\\"<CR>]],      { silent = true })
--- vim.call('which_key#register', '<Space>', "g:which_key_space")
--- vim.call('which_key#register', ',',       "g:which_key_leader")
--- vim.call('which_key#register', '\\',      "g:which_key_localleader")
+local keymap = vim.api.nvim_set_keymap
+-- Ctrl-s to save
+keymap('n', '<c-s>', ':w<CR>', { noremap = true })
+keymap('i', '<c-s>', '<Esc>:w<CR>a', { noremap = true })
+-- Ctrl jhkl to navigate splits
+keymap('n', '<c-j>', '<c-w>j', { noremap = true })
+keymap('n', '<c-h>', '<c-w>h', { noremap = true })
+keymap('n', '<c-k>', '<c-w>k', { noremap = true })
+keymap('n', '<c-l>', '<c-w>l', { noremap = true })
 
--- vim.g.which_key_space = {
---     ['name']  = 'Spacebar',
---     ['-']     = 'Horiz. Window',
---     ['1']     = 'Rails models',
---     ['2']     = 'Rails specs',
---     ['3']     = 'Lib directory',
---     ['r']     = 'MRU history',
---     ['[']     = 'Previous File',
---     [']']     = 'Next File',
---     ['space'] = 'Arg Wrap/unwrap',
---     ['\\']    = 'Veritcal Split'
--- }
+-- Plugin specific keybindings are in the plugin-configs

@@ -1,1 +1,7 @@
-require('plugin-configs.treesitter-config')
+require('plugin-configs.bufferline')
+require('plugin-configs.lualine')
+require('plugin-configs.autotag')
+require('plugin-configs.autopairs')
+require('plugin-configs.nvim-tree')
+require('plugin-configs.treesitter')
+require('plugin-configs.which-key')
