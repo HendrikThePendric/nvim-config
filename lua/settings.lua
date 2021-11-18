@@ -1,4 +1,4 @@
-vim.cmd[[filetype plugin indent on]]
+vim.cmd [[filetype plugin indent on]]
 
 vim.g.mapleader = ' '
 
@@ -37,6 +37,6 @@ vim.wo.number = true
 vim.wo.signcolumn = 'yes'
 vim.wo.wrap = false
 
-vim.cmd[[colorscheme nord]]
+vim.cmd [[colorscheme nord]]
 
 -- Plugin specific settings are in the plugin-configs
