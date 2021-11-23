@@ -46,4 +46,5 @@ require('packer').startup(function(use)
     use "jose-elias-alvarez/nvim-lsp-ts-utils"
     use 'windwp/nvim-ts-autotag'
     use 'windwp/nvim-autopairs'
+    use 'ray-x/lsp_signature.nvim'
 end)

@@ -32,9 +32,12 @@ local on_attach = function(client, bufnr)
 end
 lspconfig.tsserver.setup({
     on_attach = function(client, bufnr)
+        local ts_utils = require("nvim-lsp-ts-utils")
+        local lsp_signature = require("lsp_signature")
+
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.document_range_formatting = false
-        local ts_utils = require("nvim-lsp-ts-utils")
+
         ts_utils.setup({
             eslint_bin = "eslint_d",
             eslint_enable_diagnostics = true,
@@ -43,6 +46,9 @@ lspconfig.tsserver.setup({
             formatter = "prettier"
         })
         ts_utils.setup_client(client)
+
+        lsp_signature.on_attach()
+
         buf_map(bufnr, "n", "gs", ":TSLspOrganize<CR>")
         buf_map(bufnr, "n", "gi", ":TSLspRenameFile<CR>")
         buf_map(bufnr, "n", "go", ":TSLspImportAll<CR>")
