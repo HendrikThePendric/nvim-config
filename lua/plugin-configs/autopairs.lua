@@ -1,5 +1,6 @@
 require('nvim-autopairs').setup({
-    check_ts = true
+    -- Do not use treesitter with CMP, this will produce duplicate pairs
+    check_ts = false
 })
 -- If you want insert `(` after select function or method item
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
