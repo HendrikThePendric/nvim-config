@@ -34,9 +34,13 @@ vim.bo.tabstop = 4
 vim.opt.termguicolors = true
 
 vim.wo.number = true
+vim.wo.relativenumber = true
 vim.wo.signcolumn = 'yes'
 vim.wo.wrap = false
 
-vim.cmd [[colorscheme nord]]
+-- vim.cmd [[colorscheme nord]]
+-- vim.cmd [[colorscheme gruvbox]]
+vim.g.tokyonight_style = "storm"
+vim.cmd [[colorscheme tokyonight]]
 
 -- Plugin specific settings are in the plugin-configs

@@ -1,7 +1,6 @@
 require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
     use 'folke/which-key.nvim'
-    use 'shaunsingh/nord.nvim'
     use {
         'nvim-treesitter/nvim-treesitter',
         run = ":TSUpdate"
@@ -77,5 +76,11 @@ require('packer').startup(function(use)
             require("trouble").setup {}
         end
     }
-
+    -- Themes
+    use 'shaunsingh/nord.nvim'
+    use 'folke/tokyonight.nvim'
+    use {
+        "ellisonleao/gruvbox.nvim",
+        requires = {"rktjmp/lush.nvim"}
+    }
 end)
