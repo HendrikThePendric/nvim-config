@@ -28,6 +28,9 @@ require('lualine').setup {
             fmt = function(str)
                 return str:sub(1, 16) .. '...'
             end
+        }, 'diff', {
+            'diagnostics',
+            sources = {'nvim_lsp', 'coc'}
         }},
         lualine_c = {{
             'filename',
