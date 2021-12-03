@@ -30,6 +30,12 @@ require('lualine').setup {
             end
         }, 'diff', {
             'diagnostics',
+            diagnostics_color = {
+                -- For "ever forest" theme, comment out when switching to other theme
+                hint = {
+                    fg = '#8bb9b3'
+                }
+            },
             sources = {'nvim_lsp', 'coc'}
         }},
         lualine_c = {{
