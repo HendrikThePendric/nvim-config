@@ -17,7 +17,7 @@ vim.o.shiftwidth = 4
 -- Avoid showing message extra message when using completion
 vim.o.shortmess = vim.o.shortmess .. 'c'
 vim.o.showmode = false
-vim.o.showtabline = 2
+vim.o.showtabline = 0
 vim.o.sidescrolloff = 5
 vim.o.softtabstop = 4
 vim.o.splitbelow = true
