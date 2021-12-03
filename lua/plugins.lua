@@ -75,6 +75,7 @@ require('packer').startup(function(use)
     -- Themes
     use 'shaunsingh/nord.nvim'
     use 'folke/tokyonight.nvim'
+    use 'sainnhe/everforest'
     use {
         "ellisonleao/gruvbox.nvim",
         requires = {"rktjmp/lush.nvim"}

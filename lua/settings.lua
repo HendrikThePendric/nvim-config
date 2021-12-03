@@ -40,7 +40,9 @@ vim.wo.wrap = false
 
 -- vim.cmd [[colorscheme nord]]
 -- vim.cmd [[colorscheme gruvbox]]
-vim.g.tokyonight_style = "storm"
-vim.cmd [[colorscheme tokyonight]]
+vim.g.everforest_background = "hard"
+vim.cmd [[colorscheme everforest]]
+-- vim.g.tokyonight_style = "storm"
+-- vim.cmd [[colorscheme tokyonight]]
 
 -- Plugin specific settings are in the plugin-configs
