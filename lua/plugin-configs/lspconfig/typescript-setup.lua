@@ -47,7 +47,9 @@ lspconfig.tsserver.setup({
         })
         ts_utils.setup_client(client)
 
-        lsp_signature.on_attach()
+        lsp_signature.on_attach({
+            hint_enable = false
+        })
 
         buf_map(bufnr, "n", "gs", ":TSLspOrganize<CR>")
         buf_map(bufnr, "n", "gi", ":TSLspRenameFile<CR>")
