@@ -28,10 +28,6 @@ require('packer').startup(function(use)
             opt = true
         }
     }
-    use {
-        'kyazdani42/nvim-tree.lua',
-        requires = 'kyazdani42/nvim-web-devicons'
-    }
     use 'akinsho/toggleterm.nvim'
     use 'lukas-reineke/indent-blankline.nvim'
     -- Telescope
@@ -39,13 +35,8 @@ require('packer').startup(function(use)
         'nvim-telescope/telescope.nvim',
         requires = 'nvim-lua/plenary.nvim'
     }
+    use 'nvim-telescope/telescope-file-browser.nvim'
     use 'nvim-telescope/telescope-fzy-native.nvim'
-    use {
-        "ahmedkhalf/project.nvim",
-        config = function()
-            require("project_nvim").setup {}
-        end
-    }
     use {
         "AckslD/nvim-neoclip.lua",
         config = function()
@@ -60,7 +51,7 @@ require('packer').startup(function(use)
             require('gitsigns').setup()
         end
     }
-
+    use 'tpope/vim-fugitive'
     -- cmp-nvim
     use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-buffer'
