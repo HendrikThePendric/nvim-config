@@ -1,25 +1,4 @@
-function file_name_with_parent_dir(fallbackStr)
-    local str = vim.api.nvim_buf_get_name(0)
-    local level = 0
-    local outpuStr = ''
-    local reversedStr = string.reverse(str)
-
-    for c in reversedStr:gmatch "." do
-        if (c == "/") then
-            level = level + 1
-        end
-        if (level > 1) then
-            break
-        end
-        outpuStr = outpuStr .. c
-    end
-
-    if (outpuStr == '') then
-        return fallbackStr
-    end
-
-    return string.reverse(outpuStr)
-end
+local utils = require('utils')
 
 require('lualine').setup {
     sections = {
@@ -32,15 +11,30 @@ require('lualine').setup {
             'diagnostics',
             diagnostics_color = {
                 -- For "ever forest" theme, comment out when switching to other theme
+                error = {
+                    -- red
+                    fg = '#e68183'
+                },
+                warn = {
+                    -- yellow
+                    fg = '#d9bb80'
+                },
+                info = {
+                    -- blue
+                    fg = '#83b6af'
+                },
                 hint = {
-                    fg = '#8bb9b3'
+                    -- greenish (matches gitsigns)
+                    fg = '#82c092'
                 }
             },
-            sources = {'nvim_lsp', 'coc'}
+            sources = {'nvim_diagnostic', 'coc'}
         }},
         lualine_c = {{
             'filename',
-            fmt = file_name_with_parent_dir
+            fmt = function(fallback_str)
+                return utils.get_substring_from_end_slash(vim.api.nvim_buf_get_name(0), 1, fallback_str)
+            end
         }},
         lualine_x = {'encoding', 'filetype'}
     }
