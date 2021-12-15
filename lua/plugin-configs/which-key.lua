@@ -1,4 +1,6 @@
 local wk = require("which-key")
+local telescope = require("plugin-configs.telescope")
+
 local mappings = {
     q = {":q<cr>", "Quit"},
     Q = {":wq<cr>", "Save & Quit"},
@@ -7,6 +9,7 @@ local mappings = {
     E = {":e ~/.config/nvim/init.lua<cr>", "Edit config"},
     f = {":Telescope find_files<cr>", "Telescope Find Files"},
     r = {":Telescope live_grep<cr>", "Telescope Live Grep"},
+    p = {telescope.project_browser, "Project browser"},
     l = {
         name = "LSP",
         i = {":LspInfo<cr>", "Connected Language Servers"},
