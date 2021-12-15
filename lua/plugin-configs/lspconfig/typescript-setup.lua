@@ -1,4 +1,5 @@
 local lspconfig = require("lspconfig")
+local null_ls = require("null-ls")
 local buf_map = function(bufnr, mode, lhs, rhs, opts)
     vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts or {
         silent = true
@@ -13,9 +14,9 @@ local on_attach = function(client, bufnr)
     vim.cmd("command! LspRefs lua vim.lsp.buf.references()")
     vim.cmd("command! LspTypeDef lua vim.lsp.buf.type_definition()")
     vim.cmd("command! LspImplementation lua vim.lsp.buf.implementation()")
-    vim.cmd("command! LspDiagPrev lua vim.lsp.diagnostic.goto_prev()")
-    vim.cmd("command! LspDiagNext lua vim.lsp.diagnostic.goto_next()")
-    vim.cmd("command! LspDiagLine lua vim.lsp.diagnostic.show_line_diagnostics()")
+    vim.cmd("command! LspDiagPrev lua vim.diagnostic.goto_prev()")
+    vim.cmd("command! LspDiagNext lua vim.diagnostic.goto_next()")
+    vim.cmd("command! LspDiagLine lua vim.diagnostic.open_float()")
     vim.cmd("command! LspSignatureHelp lua vim.lsp.buf.signature_help()")
     buf_map(bufnr, "n", "gd", ":LspDef<CR>")
     buf_map(bufnr, "n", "gr", ":LspRename<CR>")
@@ -26,6 +27,7 @@ local on_attach = function(client, bufnr)
     buf_map(bufnr, "n", "ga", ":LspCodeAction<CR>")
     buf_map(bufnr, "n", "<Leader>a", ":LspDiagLine<CR>")
     buf_map(bufnr, "i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>")
+
     if client.resolved_capabilities.document_formatting then
         vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
     end
@@ -60,7 +62,8 @@ lspconfig.tsserver.setup({
 -- TODO: Replace by ESLint if not working on mono-repos, see:
 -- http://neovimcraft.com/plugin/jose-elias-alvarez/nvim-lsp-ts-utils/index.html (ESLint Notes)
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#eslint (lspconfig eslint instructions)
-require("null-ls").config({})
-lspconfig["null-ls"].setup({
+null_ls.setup({
+    sources = {null_ls.builtins.diagnostics.eslint, null_ls.builtins.code_actions.eslint,
+               null_ls.builtins.formatting.prettier},
     on_attach = on_attach
 })
