@@ -1,7 +1,10 @@
 local api = vim.api
 
 local get_map_options = function(custom_options)
-    local options = { noremap = true, silent = true }
+    local options = {
+        noremap = true,
+        silent = true
+    }
     if custom_options then
         options = vim.tbl_extend("force", options, custom_options)
     end
@@ -14,7 +17,7 @@ M.map = function(mode, target, source, opts)
     api.nvim_set_keymap(mode, target, source, get_map_options(opts))
 end
 
-for _, mode in ipairs({ "n", "o", "i", "x", "t" }) do
+for _, mode in ipairs({"n", "o", "i", "x", "t"}) do
     M[mode .. "map"] = function(...)
         M.map(mode, ...)
     end
@@ -41,7 +44,7 @@ M.input = function(keys, mode)
 end
 
 M.warn = function(msg)
-    api.nvim_echo({ { msg, "WarningMsg" } }, true, {})
+    api.nvim_echo({{msg, "WarningMsg"}}, true, {})
 end
 
 M.is_file = function(path)
@@ -66,7 +69,7 @@ M.make_floating_window = function(custom_window_config, height_ratio, width_rati
         width = width,
         height = height,
         row = width / 2,
-        col = height / 2,
+        col = height / 2
     }
     window_config = vim.tbl_extend("force", window_config, custom_window_config or {})
 
@@ -77,6 +80,30 @@ end
 
 M.get_system_output = function(cmd)
     return vim.split(vim.fn.system(cmd), "\n")
+end
+
+M.get_substring_from_end_slash = function(str, level, fallback_str)
+    level = level or 1
+    fallback_str = fallback_str or 'No output string provided'
+    local curr_level = 0
+    local outpuStr = ''
+    local reversedStr = string.reverse(str)
+
+    for c in reversedStr:gmatch "." do
+        if (c == "/") then
+            curr_level = curr_level + 1
+        end
+        if (curr_level > level) then
+            break
+        end
+        outpuStr = c .. outpuStr
+    end
+
+    if (outpuStr == '') then
+        return fallback_str
+    end
+
+    return outpuStr
 end
 
 return M

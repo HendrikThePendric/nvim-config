@@ -3,16 +3,23 @@ local u = require("utils")
 local lsp = vim.lsp
 local api = vim.api
 
-local border_opts = { border = "single", focusable = false, scope = "line" }
+local border_opts = {
+    border = "single",
+    focusable = false,
+    scope = "line"
+}
 
-vim.diagnostic.config({ virtual_text = false, float = border_opts })
+vim.diagnostic.config({
+    virtual_text = false,
+    float = border_opts
+})
 
 lsp.handlers["textDocument/signatureHelp"] = lsp.with(lsp.handlers.signature_help, border_opts)
 lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, border_opts)
 
 -- use lsp formatting if it's available (and if it's good)
 -- otherwise, fall back to null-ls
-local preferred_formatting_clients = { "denols", "eslint" }
+local preferred_formatting_clients = {"denols", "eslint"}
 local fallback_formatting_client = "null-ls"
 
 local formatting = function()
@@ -45,7 +52,7 @@ end
 
 global.lsp = {
     border_opts = border_opts,
-    formatting = formatting,
+    formatting = formatting
 }
 
 local on_attach = function(client, bufnr)
@@ -90,24 +97,32 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
-for _, server in ipairs({
-    "bashls",
-    "denols",
-    "eslint",
-    "jsonls",
-    "null-ls",
-    "sumneko_lua",
-    "tsserver",
-}) do
+for _, server in ipairs({"bashls", "denols", "eslint", "jsonls", "null-ls", "sumneko_lua", "tsserver"}) do
     require("lsp." .. server).setup(on_attach, capabilities)
 end
 
 -- suppress lspconfig messages
-local notify = vim.notify
-vim.notify = function(msg, ...)
-    if msg:match("%[lspconfig%]") then
-        return
-    end
+-- local notify = vim.notify
+-- vim.notify = function(msg, ...)
+--     if msg:match("%[lspconfig%]") then
+--         return
+--     end
 
-    notify(msg, ...)
+--     notify(msg, ...)
+-- end
+
+local signs = {
+    Error = " ",
+    Warn = " ",
+    Hint = " ",
+    Info = " "
+}
+
+for type, icon in pairs(signs) do
+    local hl = "DiagnosticSign" .. type
+    vim.fn.sign_define(hl, {
+        text = icon,
+        texthl = hl,
+        numhl = ""
+    })
 end

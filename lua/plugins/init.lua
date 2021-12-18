@@ -1,4 +1,22 @@
+-- ***** TODO ***** 
+-- [DONE] review all plugins
+-- get my:
+-- * [DONE] lualine setup
+-- * [DONE] telescope: neovim config file browser
+-- * [DONE] telescope: project switcher/opener
+-- * [BUSY] telescope: check keybindings and combine config with mine
+-- * [BUSY] which-key installation
+-- Create vim.abolish + tweak subversive setup
+-- [DONE] Why is space (leader) not triggering which-key, but command mode / why not working?
+-- [DONE] What's up with the nathom/filetype.nvim plugin throwing an error?
+-- Show lint icons instead of letters
+-- [DONE] remove vim surround and replace with autotags or sth
+-- Remove markdown linter, should just be done with prettier
+-- review + update keybindings, incl which-key
+-- [DONE] review what is in my setup that should be kept     
+-- Lazy loading, and getting rid of helpers in plugin/init.lua
 vim.cmd("packadd packer.nvim")
+
 return require("packer").startup(function()
     use({
         "wbthomason/packer.nvim",
@@ -17,19 +35,9 @@ return require("packer").startup(function()
     end
 
     -- basic
-    use("tpope/vim-surround")
-    use("tpope/vim-unimpaired")
     use("tpope/vim-sleuth") -- detects indentation
     use_with_config("numToStr/Comment.nvim", "comment")
     use_with_config("lewis6991/gitsigns.nvim", "gitsigns")
-
-    -- text objects
-    use("wellle/targets.vim") -- many useful additional text objects
-    use({"kana/vim-textobj-user", {"kana/vim-textobj-entire", -- ae/ie for entire buffer
-    "Julian/vim-textobj-variable-segment", -- av/iv for variable segment
-    "michaeljsmith/vim-indent-object", -- ai/ii for indentation area
-    "beloglazov/vim-textobj-punctuation" -- au/iu for punctuation
-    }})
     use_with_config("andymass/vim-matchup", "matchup") -- improves %, now with treesitter
 
     -- additional functionality
@@ -47,6 +55,7 @@ return require("packer").startup(function()
         'nvim-telescope/telescope-fzf-native.nvim',
         run = 'make'
     }
+    use 'nvim-telescope/telescope-file-browser.nvim'
     use({
         "nvim-telescope/telescope.nvim", -- fuzzy finder
         config = config("telescope")
@@ -79,10 +88,7 @@ return require("packer").startup(function()
     }) -- makes jsx comments actually work
 
     -- visual
-    use({"sainnhe/sonokai", -- themes
-    "rmehri01/onenord.nvim"})
     use("kyazdani42/nvim-web-devicons") -- icons
-    use_with_config("lukas-reineke/headlines.nvim", "headlines") -- markdown highlights
     use_with_config("lukas-reineke/indent-blankline.nvim", "indent-blankline") -- show indent markers
     use_with_config("nvim-lualine/lualine.nvim", "lualine") -- statusline
 
@@ -96,9 +102,44 @@ return require("packer").startup(function()
         run = "cd app && yarn install",
         cmd = "MarkdownPreview"
     })
-    use("tridactyl/vim-tridactyl") -- tridactylrc syntax
-    use_with_config("nathom/filetype.nvim", "filetype") -- greatly reduces startup time
 
-    -- theme
-    use("sainnhe/everforest")
+    use 'folke/lsp-colors.nvim'
+    use 'norcalli/nvim-colorizer.lua'
+    use {
+        "folke/trouble.nvim",
+        requires = "kyazdani42/nvim-web-devicons",
+        config = function()
+            require("trouble").setup {}
+        end
+    }
+    use 'tpope/vim-fugitive'
+    use {
+        "AckslD/nvim-neoclip.lua",
+        config = function()
+            require('neoclip').setup()
+        end
+    }
+    use 'famiu/nvim-reload'
+    use {
+
+        "folke/which-key.nvim",
+        config = function()
+            require("which-key").setup {
+                -- your configuration comes here
+                -- or leave it empty to use the default settings
+                -- refer to the configuration section below
+            }
+        end
+    }
+
+    -- themes
+    use 'sainnhe/sonokai'
+    use 'rmehri01/onenord.nvim'
+    use 'shaunsingh/nord.nvim'
+    use 'folke/tokyonight.nvim'
+    use 'sainnhe/everforest'
+    use {
+        "ellisonleao/gruvbox.nvim",
+        requires = {"rktjmp/lush.nvim"}
+    }
 end)
