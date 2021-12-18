@@ -23,33 +23,52 @@ return require("packer").startup(function()
         opt = true
     })
 
-    local config = function(name)
-        return string.format("require('plugins.%s')", name)
-    end
-
-    local use_with_config = function(path, name)
-        use({
-            path,
-            config = config(name)
-        })
-    end
-
     -- basic
     use("tpope/vim-sleuth") -- detects indentation
-    use_with_config("numToStr/Comment.nvim", "comment")
-    use_with_config("lewis6991/gitsigns.nvim", "gitsigns")
-    use_with_config("andymass/vim-matchup", "matchup") -- improves %, now with treesitter
+    use({
+        "numToStr/Comment.nvim",
+        config = function()
+            require("plugins.comment")
+        end
+    })
+    use({
+        "lewis6991/gitsigns.nvim",
+        config = function()
+            require("plugins.gitsigns")
+        end
+    })
+    use({
+        "andymass/vim-matchup",
+        config = function()
+            require("plugins.matchup")
+        end
+    }) -- improves %, now with treesitter
 
     -- additional functionality
     use("ggandor/lightspeed.nvim") -- motion
-    use_with_config("svermeulen/vim-subversive", "subversive") -- adds substitute operator
-    use_with_config("hrsh7th/vim-vsnip", "vsnip") -- snippets
-    use_with_config("windwp/nvim-autopairs", "autopairs") -- autocomplete pairs
+    use({
+        "svermeulen/vim-subversive",
+        config = function()
+            require("plugins.subversive")
+        end
+    }) -- adds substitute operator
+    use({
+        "hrsh7th/vim-vsnip",
+        config = function()
+            require("plugins.vsnip")
+        end
+    }) -- snippets
+    use({
+        "windwp/nvim-autopairs",
+        config = function()
+            require("plugins.autopairs")
+        end
+    }) -- autocomplete pairs
     use({
         "hrsh7th/nvim-cmp", -- completion
         requires = {"hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-vsnip",
                     "onsails/lspkind-nvim", "folke/lua-dev.nvim"},
-        config = config("cmp")
+        config = require("plugins.cmp")
     })
     use {
         'nvim-telescope/telescope-fzf-native.nvim',
@@ -58,12 +77,17 @@ return require("packer").startup(function()
     use 'nvim-telescope/telescope-file-browser.nvim'
     use({
         "nvim-telescope/telescope.nvim", -- fuzzy finder
-        config = config("telescope")
+        config = require("plugins.telescope")
     })
 
     -- lsp
     use("neovim/nvim-lspconfig") -- makes lsp configuration easier
-    use_with_config("RRethy/vim-illuminate", "illuminate") -- highlights and allows moving between variable references
+    use({
+        "RRethy/vim-illuminate",
+        config = function()
+            require("plugins.illuminate")
+        end
+    }) -- highlights and allows moving between variable references
     use("b0o/schemastore.nvim") -- simple access to json-language-server schemae
     use("jose-elias-alvarez/null-ls.nvim") -- transforms CLI output / Lua code into language server diagnostics, formatting, and more
     use("jose-elias-alvarez/nvim-lsp-ts-utils") -- improves TypeScript development experience
@@ -72,7 +96,7 @@ return require("packer").startup(function()
     use({
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdate",
-        config = config("treesitter")
+        config = require("plugins.treesitter")
     })
     use({
         "RRethy/nvim-treesitter-textsubjects", -- adds smart text objects
@@ -89,8 +113,18 @@ return require("packer").startup(function()
 
     -- visual
     use("kyazdani42/nvim-web-devicons") -- icons
-    use_with_config("lukas-reineke/indent-blankline.nvim", "indent-blankline") -- show indent markers
-    use_with_config("nvim-lualine/lualine.nvim", "lualine") -- statusline
+    use({
+        "lukas-reineke/indent-blankline",
+        config = function()
+            require("plugins.indent-blankline")
+        end
+    }) -- show indent markers
+    use({
+        "nvim-lualine/lualine.nvim",
+        config = function()
+            require("plugins.lualine")
+        end
+    }) -- statusline
 
     -- misc
     use("nvim-lua/plenary.nvim")
