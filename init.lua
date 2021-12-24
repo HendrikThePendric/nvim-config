@@ -141,9 +141,9 @@ require("lsp")
 -- which-key keybindings
 -- require("which-key-bindings")
 
-vim.cmd [[colorscheme nord]]
+-- vim.cmd [[colorscheme nord]]
 -- vim.cmd [[colorscheme gruvbox]]
--- vim.g.everforest_background = "hard"
--- vim.cmd [[colorscheme everforest]]
+vim.g.everforest_background = "hard"
+vim.cmd [[colorscheme everforest]]
 -- vim.g.tokyonight_style = "storm"
 -- vim.cmd [[colorscheme tokyonight]]

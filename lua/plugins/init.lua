@@ -6,15 +6,15 @@
 -- * [DONE] telescope: project switcher/opener
 -- * [BUSY] telescope: check keybindings and combine config with mine
 -- * [BUSY] which-key installation
--- Create vim.abolish + tweak subversive setup
+-- Create vim.abolish + tweak subversive + nvim-treesitter-textsubjects setup
 -- [DONE] Why is space (leader) not triggering which-key, but command mode / why not working?
 -- [DONE] What's up with the nathom/filetype.nvim plugin throwing an error?
--- Show lint icons instead of letters
+-- [DONE] Show lint icons instead of letters
 -- [DONE] remove vim surround and replace with autotags or sth
--- Remove markdown linter, should just be done with prettier
+-- [DONE] Remove markdown linter, should just be done with prettier
 -- review + update keybindings, incl which-key
 -- [DONE] review what is in my setup that should be kept     
--- Lazy loading, and getting rid of helpers in plugin/init.lua
+-- [CANCELLED] Lazy loading, and getting rid of helpers in plugin/init.lua - NOT WORTH IT STARTUP ONLY TAKES 265ms
 vim.cmd("packadd packer.nvim")
 
 return require("packer").startup(function()
@@ -23,6 +23,7 @@ return require("packer").startup(function()
         opt = true
     })
 
+    use("nathom/filetype.nvim") -- improves startup time
     -- basic
     use("tpope/vim-sleuth") -- detects indentation
     use({
@@ -52,6 +53,7 @@ return require("packer").startup(function()
             require("plugins.subversive")
         end
     }) -- adds substitute operator
+    use("tpope/vim-abolish") -- case perserving substitutions
     use({
         "hrsh7th/vim-vsnip",
         config = function()
@@ -68,7 +70,9 @@ return require("packer").startup(function()
         "hrsh7th/nvim-cmp", -- completion
         requires = {"hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-vsnip",
                     "onsails/lspkind-nvim", "folke/lua-dev.nvim"},
-        config = require("plugins.cmp")
+        config = function()
+            require("plugins.cmp")
+        end
     })
     use {
         'nvim-telescope/telescope-fzf-native.nvim',
@@ -77,7 +81,9 @@ return require("packer").startup(function()
     use 'nvim-telescope/telescope-file-browser.nvim'
     use({
         "nvim-telescope/telescope.nvim", -- fuzzy finder
-        config = require("plugins.telescope")
+        config = function()
+            require("plugins.telescope")
+        end
     })
 
     -- lsp
@@ -96,7 +102,9 @@ return require("packer").startup(function()
     use({
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdate",
-        config = require("plugins.treesitter")
+        config = function()
+            require("plugins.treesitter")
+        end
     })
     use({
         "RRethy/nvim-treesitter-textsubjects", -- adds smart text objects
@@ -114,7 +122,7 @@ return require("packer").startup(function()
     -- visual
     use("kyazdani42/nvim-web-devicons") -- icons
     use({
-        "lukas-reineke/indent-blankline",
+        "lukas-reineke/indent-blankline.nvim",
         config = function()
             require("plugins.indent-blankline")
         end
@@ -147,12 +155,12 @@ return require("packer").startup(function()
         end
     }
     use 'tpope/vim-fugitive'
-    use {
-        "AckslD/nvim-neoclip.lua",
-        config = function()
-            require('neoclip').setup()
-        end
-    }
+    -- use {
+    --     "AckslD/nvim-neoclip.lua",
+    --     config = function()
+    --         require('neoclip').setup()
+    --     end
+    -- } TRYING VIM_YOINK INSTEAD CAUSE THAT INTERGRATES WITH VIM-SUBVERSIVE
     use 'famiu/nvim-reload'
     use {
 

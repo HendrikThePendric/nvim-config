@@ -56,7 +56,7 @@ require('lualine').setup {
         }, 'diff', {
             'diagnostics',
             diagnostics_color = {
-                -- For "ever forest" theme, comment out when switching to other theme
+                -- For "everforest" theme, comment out when switching to other theme
                 error = {
                     -- red
                     fg = '#e68183'

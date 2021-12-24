@@ -101,16 +101,6 @@ for _, server in ipairs({"bashls", "denols", "eslint", "jsonls", "null-ls", "sum
     require("lsp." .. server).setup(on_attach, capabilities)
 end
 
--- suppress lspconfig messages
--- local notify = vim.notify
--- vim.notify = function(msg, ...)
---     if msg:match("%[lspconfig%]") then
---         return
---     end
-
---     notify(msg, ...)
--- end
-
 local signs = {
     Error = " ",
     Warn = " ",
