@@ -1,20 +1,3 @@
--- ***** TODO ***** 
--- [DONE] review all plugins
--- get my:
--- * [DONE] lualine setup
--- * [DONE] telescope: neovim config file browser
--- * [DONE] telescope: project switcher/opener
--- * [BUSY] telescope: check keybindings and combine config with mine
--- * [BUSY] which-key installation
--- Create vim.abolish + tweak subversive + nvim-treesitter-textsubjects setup
--- [DONE] Why is space (leader) not triggering which-key, but command mode / why not working?
--- [DONE] What's up with the nathom/filetype.nvim plugin throwing an error?
--- [DONE] Show lint icons instead of letters
--- [DONE] remove vim surround and replace with autotags or sth
--- [DONE] Remove markdown linter, should just be done with prettier
--- review + update keybindings, incl which-key
--- [DONE] review what is in my setup that should be kept     
--- [CANCELLED] Lazy loading, and getting rid of helpers in plugin/init.lua - NOT WORTH IT STARTUP ONLY TAKES 265ms
 vim.cmd("packadd packer.nvim")
 
 return require("packer").startup(function()
