@@ -145,17 +145,14 @@ return require("packer").startup(function()
     --     end
     -- } TRYING VIM_YOINK INSTEAD CAUSE THAT INTERGRATES WITH VIM-SUBVERSIVE
     use 'famiu/nvim-reload'
-    use {
 
+    use({
         "folke/which-key.nvim",
+        event = "VimEnter",
         config = function()
-            require("which-key").setup {
-                -- your configuration comes here
-                -- or leave it empty to use the default settings
-                -- refer to the configuration section below
-            }
+            require("plugins.which-key")
         end
-    }
+    })
 
     -- themes
     use 'sainnhe/sonokai'
