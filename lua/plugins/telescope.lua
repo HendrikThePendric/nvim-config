@@ -5,12 +5,10 @@ local pickers = require('telescope.pickers')
 local finders = require('telescope.finders')
 local conf = require('telescope.config').values
 local action_state = require('telescope.actions.state')
-
 local api = vim.api
-
 local u = require("utils")
-local commands = require("commands")
 
+-- Setup
 telescope.setup({
     defaults = {
         layout_config = {
@@ -51,6 +49,7 @@ telescope.setup({
 telescope.load_extension('fzf')
 telescope.load_extension('file_browser')
 
+-- Custom pickers and their helpers
 function get_project_folders()
     local results = {}
     local p = io.popen('ls -d ~/apps/*') -- Open directory look for files, save data in p. By giving '-type f' as parameter, it returns all direcotires.     
@@ -66,67 +65,78 @@ function get_name_and_full_path(action_state)
     return unpack(selection.value)
 end
 
-global.telescope = {
-    project_browser = function(opts)
-        opts = opts or {}
-        pickers.new(opts, {
-            prompt_title = "Projects",
-            finder = finders.new_table {
-                results = get_project_folders(),
-                entry_maker = function(entry)
-                    return {
-                        value = entry,
-                        display = entry[1],
-                        ordinal = entry[1]
-                    }
-                end
-            },
-            sorter = conf.generic_sorter(opts),
-            attach_mappings = function(prompt_bufnr, map)
-                -- Open project in new kitty OS window
-                actions.select_default:replace(function()
-                    actions.close(prompt_bufnr)
-
-                    local name, full_path = get_name_and_full_path(action_state)
-                    local cmd = 'kitty @ new-window --window-type os --cwd ' .. full_path .. ' --title ' .. name ..
-                                    ' nvim'
-
-                    vim.fn.jobstart(cmd)
-                end)
-
-                -- Switch to new project in current kitty OS window
-                map("i", "<C-o>", function()
-                    actions.close(prompt_bufnr)
-
-                    local name, full_path = get_name_and_full_path(action_state)
-
-                    -- Clear all buffers
-                    for index, buff_nr in ipairs(vim.api.nvim_list_bufs()) do
-                        -- Will fail if any dirty buffers are present and that's good
-                        vim.api.nvim_buf_delete(buff_nr, {})
-                    end
-
-                    -- Set cwd to project path
-                    vim.api.nvim_set_current_dir(full_path)
-
-                    -- Update window title
-                    vim.fn.jobstart('kitty @ set-window-title ' .. name)
-                end)
-                return true
+function project_browser(opts)
+    opts = opts or {}
+    pickers.new(opts, {
+        prompt_title = "Projects",
+        finder = finders.new_table {
+            results = get_project_folders(),
+            entry_maker = function(entry)
+                return {
+                    value = entry,
+                    display = entry[1],
+                    ordinal = entry[1]
+                }
             end
-        }):find()
-    end,
-    search_dotfiles = function()
-        require("telescope.builtin").find_files({
-            prompt_title = 'NeoVim Config files',
-            cwd = '~/.config/nvim',
-            hidden = false
-        })
-    end
+        },
+        sorter = conf.generic_sorter(opts),
+        attach_mappings = function(prompt_bufnr, map)
+            -- Open project in new kitty OS window
+            actions.select_default:replace(function()
+                actions.close(prompt_bufnr)
+
+                local name, full_path = get_name_and_full_path(action_state)
+                local cmd = 'kitty @ new-window --window-type os --cwd ' .. full_path .. ' --title ' .. name .. ' nvim'
+
+                vim.fn.jobstart(cmd)
+            end)
+
+            -- Switch to new project in current kitty OS window
+            map("i", "<C-o>", function()
+                actions.close(prompt_bufnr)
+
+                local name, full_path = get_name_and_full_path(action_state)
+
+                -- Clear all buffers
+                for index, buff_nr in ipairs(vim.api.nvim_list_bufs()) do
+                    -- Will fail if any dirty buffers are present and that's good
+                    vim.api.nvim_buf_delete(buff_nr, {})
+                end
+
+                -- Set cwd to project path
+                vim.api.nvim_set_current_dir(full_path)
+
+                -- Update window title
+                vim.fn.jobstart('kitty @ set-window-title ' .. name)
+            end)
+            return true
+        end
+    }):find()
+end
+
+function search_dotfiles()
+    local b = require('telescope.builtin')
+    -- print(vim.inspect(b))
+    print(vim.inspect(b.find_files))
+    -- local find_files = 
+
+    b.find_files({
+        prompt_title = 'NeoVim Config files',
+        cwd = '~/.config/nvim',
+        hidden = false
+    })
+end
+
+-- Expose custom pickers as globals for `lua_command()`
+global.telescope_custom = {
+    project_browser = project_browser,
+    search_dotfiles = search_dotfiles
 }
 
-u.lua_command("Projects", "global.telescope.project_browser()")
-u.lua_command("DotFiles", "global.telescope.search_dotfiles()")
+-- Key bindings
+u.lua_command("Projects", "global.telescope_custom.project_browser()")
+u.lua_command("DotFiles", "global.telescope_custom.search_dotfiles()")
+
 u.command("Files", "Telescope find_files")
 u.command("Rg", "Telescope live_grep")
 u.command("BLines", "Telescope current_buffer_fuzzy_find")
