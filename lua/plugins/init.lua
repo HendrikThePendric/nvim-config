@@ -29,7 +29,14 @@ return require("packer").startup(function()
     }) -- improves %, now with treesitter
 
     -- additional functionality
-    use("ggandor/lightspeed.nvim") -- motion
+    use {
+        'phaazon/hop.nvim',
+        branch = 'v1', -- optional but strongly recommended
+        config = function()
+            -- you can configure Hop the way you like here; see :h hop-config
+            require'hop'.setup()
+        end
+    }
     use({
         "svermeulen/vim-subversive",
         config = function()
@@ -145,6 +152,7 @@ return require("packer").startup(function()
     --     end
     -- } TRYING VIM_YOINK INSTEAD CAUSE THAT INTERGRATES WITH VIM-SUBVERSIVE
     use 'famiu/nvim-reload'
+    use 'tonchis/vim-to-github'
 
     use({
         "folke/which-key.nvim",

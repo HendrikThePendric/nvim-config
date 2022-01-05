@@ -57,22 +57,22 @@ require('lualine').setup {
             'diagnostics',
             diagnostics_color = {
                 -- For "everforest" theme, comment out when switching to other theme
-                error = {
-                    -- red
-                    fg = '#e68183'
-                },
-                warn = {
-                    -- yellow
-                    fg = '#d9bb80'
-                },
-                info = {
-                    -- blue
-                    fg = '#83b6af'
-                },
-                hint = {
-                    -- greenish (matches gitsigns)
-                    fg = '#82c092'
-                }
+                -- error = {
+                --     -- red
+                --     fg = '#e68183'
+                -- },
+                -- warn = {
+                --     -- yellow
+                --     fg = '#d9bb80'
+                -- },
+                -- info = {
+                --     -- blue
+                --     fg = '#83b6af'
+                -- },
+                -- hint = {
+                --     -- greenish (matches gitsigns)
+                --     fg = '#82c092'
+                -- }
             },
             sources = {'nvim_diagnostic', 'coc'}
         }},
