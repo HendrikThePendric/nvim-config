@@ -1,5 +1,16 @@
 local u = require("utils")
 
+--[[
+    TODO:
+    - Try different version of which-key that works better
+    - Re-review plugins and only keep ones that are 100% useful
+    - Illuminate keybindings
+    - Comment keybindings
+    - Hop keybindings
+    - Telescope keybindings
+    - LSP keybindings
+--]]
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
