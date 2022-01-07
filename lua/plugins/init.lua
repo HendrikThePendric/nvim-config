@@ -152,17 +152,11 @@ return require("packer").startup(function()
     use 'famiu/nvim-reload'
     use 'tonchis/vim-to-github'
 
-    -- use({
-    --     "folke/which-key.nvim",
-    --     event = "VimEnter",
-    --     config = function()
-    --         require("plugins.which-key")
-    --     end
-    -- })
     -- WhichKey
     use {
         -- "folke/which-key.nvim",
         "zeertzjq/which-key.nvim",
+        event = "VimEnter",
         config = function()
             require("plugins.which-key")
         end,
