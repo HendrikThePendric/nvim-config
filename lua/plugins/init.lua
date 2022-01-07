@@ -152,13 +152,23 @@ return require("packer").startup(function()
     use 'famiu/nvim-reload'
     use 'tonchis/vim-to-github'
 
-    use({
-        "folke/which-key.nvim",
-        event = "VimEnter",
+    -- use({
+    --     "folke/which-key.nvim",
+    --     event = "VimEnter",
+    --     config = function()
+    --         require("plugins.which-key")
+    --     end
+    -- })
+    -- WhichKey
+    use {
+        -- "folke/which-key.nvim",
+        "zeertzjq/which-key.nvim",
         config = function()
             require("plugins.which-key")
-        end
-    })
+        end,
+        branch = "patch-1"
+        -- using fork until this is merged https://github.com/folke/which-key.nvim/pull/227
+    }
 
     -- themes
     use 'sainnhe/sonokai'
