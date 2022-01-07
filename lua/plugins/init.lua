@@ -46,6 +46,7 @@ return require("packer").startup(function()
     use("tpope/vim-abolish") -- case perserving substitutions
     use({
         "hrsh7th/vim-vsnip",
+        requires = {"hrsh7th/vim-vsnip-integ"},
         config = function()
             require("plugins.vsnip")
         end
