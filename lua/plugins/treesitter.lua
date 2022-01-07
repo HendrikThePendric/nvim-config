@@ -14,11 +14,18 @@ require("nvim-treesitter.configs").setup({
         enable = true,
         enable_autocmd = false
     },
-    textsubjects = {
-        enable = true,
-        keymaps = {
-            ["."] = "textsubjects-smart",
-            [";"] = "textsubjects-container-outer"
+    textobjects = {
+        select = {
+            enable = true,
+            -- Automatically jump forward to textobj, similar to targets.vim
+            lookahead = true,
+            keymaps = {
+                -- You can use the capture groups defined in textobjects.scm
+                ["af"] = "@function.outer",
+                ["if"] = "@function.inner",
+                ["ac"] = "@class.outer",
+                ["ic"] = "@class.inner"
+            }
         }
     },
     autotag = {

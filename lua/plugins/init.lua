@@ -96,10 +96,7 @@ return require("packer").startup(function()
             require("plugins.treesitter")
         end
     })
-    use({
-        "RRethy/nvim-treesitter-textsubjects", -- adds smart text objects
-        ft = {"lua", "typescript", "typescriptreact"}
-    })
+    use("nvim-treesitter/nvim-treesitter-textobjects")
     use({
         "windwp/nvim-ts-autotag",
         ft = {"typescript", "typescriptreact"}
