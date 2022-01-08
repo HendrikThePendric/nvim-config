@@ -3,7 +3,7 @@ local u = require("utils")
 
 autopairs.setup({
     check_ts = true,
-    map_cr = true,
+    map_cr = true
 })
 
 local disabled = false
@@ -30,7 +30,9 @@ global.reset_autopairs = function()
     end
 end
 
--- toggle pair completion on <C-l>
-u.imap("<C-l>", "<cmd> lua global.toggle_autopairs()<CR>")
+-- Simply having a command in place is enough,
+-- no need for keyboard shortcur
+-- u.imap("<C-l>", "<cmd> lua global.toggle_autopairs()<CR>")
+u.lua_command("AutoPairsToggle", "global.toggle_autopairs()")
 -- automatically reset when leaving insert mode
 vim.cmd("autocmd InsertLeave * lua global.reset_autopairs()")

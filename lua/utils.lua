@@ -23,6 +23,10 @@ for _, mode in ipairs({"n", "o", "i", "x", "t"}) do
     end
 end
 
+M.bang_map = function(target, source, opts)
+    api.nvim_set_keymap("!", target, source, get_map_options(opts))
+end
+
 M.buf_map = function(bufnr, mode, target, source, opts)
     api.nvim_buf_set_keymap(bufnr or 0, mode, target, source, get_map_options(opts))
 end

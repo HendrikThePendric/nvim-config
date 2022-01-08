@@ -2,13 +2,17 @@ local u = require("utils")
 
 --[[
     TODO:
-    - Try different version of which-key that works better
-    - Re-review plugins and only keep ones that are 100% useful
-    - Illuminate keybindings
+    - CANCELLED Try different version of which-key that works better
+    - DONE Re-review plugins and only keep ones that are 100% useful
+    - DONE Replace textsubjects with nvim-treesitter/nvim-treesitter-textobjects
+    - DONE Illuminate keybindings
     - Comment keybindings
     - Hop keybindings
     - Telescope keybindings
+    - GitSigns + Git fugitive keybindings
+    - CMP keybindings
     - LSP keybindings
+    - Subversive + abolish + yoink keybindings
 --]]
 
 vim.g.mapleader = " "
@@ -31,7 +35,7 @@ vim.opt.cursorline = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes"
-vim.opt.timeoutlen = 800
+vim.opt.timeoutlen = 100
 vim.opt.shortmess:append("cA")
 vim.opt.clipboard:append("unnamedplus")
 vim.opt.autoindent = false

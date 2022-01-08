@@ -149,6 +149,7 @@ return require("packer").startup(function()
     --         require('neoclip').setup()
     --     end
     -- } TRYING VIM_YOINK INSTEAD CAUSE THAT INTERGRATES WITH VIM-SUBVERSIVE
+    use 'svermeulen/vim-yoink'
     use 'famiu/nvim-reload'
     use 'tonchis/vim-to-github'
 

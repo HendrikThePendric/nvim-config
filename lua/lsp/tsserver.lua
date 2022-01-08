@@ -5,7 +5,7 @@ local ts_utils_settings = {
     import_all_scan_buffers = 100,
     update_imports_on_move = true,
     -- filter out dumb module warning
-    filter_out_diagnostics_by_code = { 80001 },
+    filter_out_diagnostics_by_code = {80001}
 }
 
 local M = {}
@@ -22,14 +22,14 @@ M.setup = function(on_attach, capabilities)
             ts_utils.setup(ts_utils_settings)
             ts_utils.setup_client(client)
 
-            u.buf_map(bufnr, "n", "gs", ":TSLspOrganize<CR>")
-            u.buf_map(bufnr, "n", "gI", ":TSLspRenameFile<CR>")
-            u.buf_map(bufnr, "n", "go", ":TSLspImportAll<CR>")
+            -- u.buf_map(bufnr, "n", "gs", ":TSLspOrganize<CR>")
+            -- u.buf_map(bufnr, "n", "gI", ":TSLspRenameFile<CR>")
+            -- u.buf_map(bufnr, "n", "go", ":TSLspImportAll<CR>")
         end,
         flags = {
-            debounce_text_changes = 150,
+            debounce_text_changes = 150
         },
-        capabilities = capabilities,
+        capabilities = capabilities
     })
 end
 
