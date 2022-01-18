@@ -36,6 +36,24 @@ telescope.setup({
             }
         }
     },
+    pickers = {
+        buffers = {
+            show_all_buffers = true,
+            sort_lastused = true,
+            mappings = {
+                i = {
+                    ["<c-d>"] = "delete_buffer"
+                }
+            }
+        }
+        -- git_branches = {
+        --     mappings = {
+        --         i = {
+        --             ["<c-d>"] = 
+        --         }
+        --     }
+        -- }
+    },
     extensions = {
         fzf = {
             fuzzy = true, -- false will only do exact matching
@@ -92,7 +110,7 @@ function project_browser(opts)
             end)
 
             -- Switch to new project in current kitty OS window
-            map("i", "<C-o>", function()
+            map("i", "<M-CR>", function()
                 actions.close(prompt_bufnr)
 
                 local name, full_path = get_name_and_full_path(action_state)
@@ -116,9 +134,6 @@ end
 
 function search_dotfiles()
     local b = require('telescope.builtin')
-    -- print(vim.inspect(b))
-    print(vim.inspect(b.find_files))
-    -- local find_files = 
 
     b.find_files({
         prompt_title = 'NeoVim Config files',
@@ -134,8 +149,8 @@ global.telescope_custom = {
 }
 
 -- Key bindings
-u.lua_command("Projects", "global.telescope_custom.project_browser()")
-u.lua_command("DotFiles", "global.telescope_custom.search_dotfiles()")
+u.lua_command("TelescopeProjects", "global.telescope_custom.project_browser()")
+u.lua_command("TelescopeDotFiles", "global.telescope_custom.search_dotfiles()")
 
 u.command("Files", "Telescope find_files")
 u.command("Rg", "Telescope live_grep")

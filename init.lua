@@ -6,13 +6,14 @@ local u = require("utils")
     - DONE Re-review plugins and only keep ones that are 100% useful
     - DONE Replace textsubjects with nvim-treesitter/nvim-treesitter-textobjects
     - DONE Illuminate keybindings
-    - Comment keybindings
+    - DONE Comment keybindings
     - Hop keybindings
     - Telescope keybindings
-    - GitSigns + Git fugitive keybindings
+    - DONE GitSigns + Git fugitive keybindings
     - CMP keybindings
     - LSP keybindings
     - Subversive + abolish + yoink keybindings
+    - DONE Window management keybindings
 --]]
 
 vim.g.mapleader = " "
@@ -53,6 +54,17 @@ vim.cmd('autocmd TextYankPost * silent! lua vim.highlight.on_yank({ higroup = "I
 vim.cmd("autocmd TermOpen * startinsert")
 -- disable line numbers
 vim.cmd("autocmd TermOpen * setlocal nonumber norelativenumber")
+-- exit terminal insert mode more easily
+u.tmap("<Esc>", "<C-\\><C-n>")
+
+-- window switching
+u.nmap("<C-h>", "<C-w>h")
+u.nmap("<C-j>", "<C-w>j")
+u.nmap("<C-k>", "<C-w>k")
+u.nmap("<C-l>", "<C-w>l")
+-- file saving
+u.nmap("<C-s>", "<cmd>w<cr>")
+u.imap("<C-s>", "<cmd>w<cr>")
 
 -- source remaining config
 require("plugins")

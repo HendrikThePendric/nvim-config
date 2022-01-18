@@ -1,7 +1,10 @@
+local u = require("utils")
+
 require("Comment").setup({
+    sticky = false,
     -- integrate with nvim-ts-context-commentstring
     pre_hook = function(ctx)
-        if not vim.tbl_contains({ "typescript", "typescriptreact" }, vim.bo.ft) then
+        if not vim.tbl_contains({"typescript", "typescriptreact"}, vim.bo.ft) then
             return
         end
 
@@ -17,7 +20,12 @@ require("Comment").setup({
 
         return require("ts_context_commentstring.internal").calculate_commentstring({
             key = type,
-            location = location,
+            location = location
         })
-    end,
+    end
 })
+
+-- Use [Ctrl-/] to toggle comments in most modes
+u.nmap('<C-_>', '<CMD>lua require("Comment.api").toggle_current_linewise()<CR>')
+u.imap('<C-_>', '<CMD>lua require("Comment.api").toggle_current_linewise()<CR>')
+u.xmap('<C-_>', '<ESC><CMD>lua require("Comment.api").toggle_linewise_op(vim.fn.visualmode())<CR>')

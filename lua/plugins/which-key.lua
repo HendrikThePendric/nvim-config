@@ -1,4 +1,8 @@
 local wk = require("which-key")
+local u = require("utils")
+
+-- reset treesitter and lsp diagnostics
+u.command("DiagnosticsReset", "w | :e")
 
 wk.setup({
     plugins = {
@@ -21,6 +25,12 @@ wk.setup({
         }
     },
     hidden = {"<Plug>", "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ "},
+    layout = {
+        width = {
+            -- can be handy to increase to work out what command is called
+            max = 50
+        }
+    },
     key_labels = {
         ["<cr>"] = "<enter>",
         ["<c-w>"] = "<ctrl-w>",
@@ -35,28 +45,86 @@ wk.register({
     ["<M-n>"] = {"illuminate next reference"},
     ["<M-p>"] = {"illuminate previous reference"},
     ["<2-LeftMouse>"] = {"matchup double click"},
-    ["<C-L>"] = {"clear search highlights"}
+    ["<C-L>"] = {"clear search highlights"},
+    ["gc"] = {
+        name = "line comment",
+        c = {"toggle line comment"},
+        O = {"add comment on the line above"},
+        o = {"add comment on the line below"},
+        A = {"add comment at the end of line"}
+    },
+    ["gb"] = {
+        name = "block comment",
+        c = {"toggle block comment"}
+    },
+    ["<C-w>p"] = {"<Plug>(choosewin)", "Pick window"},
+    ["<C-w>n"] = {
+        name = "new layout",
+        b = {
+            name = "terminal below",
+            ["2"] = {"<cmd>only|bufdo bwipeout|vs n|vs n|wincmd J|res 10|terminal<cr>", "2 columns"},
+            ["3"] = {"<cmd>only|bufdo bwipeout|vs n|vs n|vs n|wincmd J|res 10|terminal<cr>", "3 columns"}
+        },
+        r = {
+            name = "terminal bottom right",
+            ["2"] = {"<cmd>only|bufdo bwipeout|vs n|10:split|terminal<cr>", "2 columns"},
+            ["3"] = {"<cmd>only|bufdo bwipeout|vs n|vs n|10:split|terminal<cr>", "3 columns"}
+        }
+    },
+    ["<C-w>_"] = {"Maximize window"}
 })
 
--- Make some labels look prettier (VISUAL mode)
+-- Make some Treesitter text-objects labels look prettier (VISUAL mode)
 wk.register({
-    -- Treesitter text-objects
     ["vif"] = {"select inner function"},
     ["vic"] = {"select inner class"},
     ["vaf"] = {"select outer function"},
     ["vac"] = {"select outer class"}
 })
 
+wk.register({
+    g = {
+        name = "Comments",
+        c = {"toggle line comment"},
+        b = {"toggle block comments"}
+    }
+}, {
+    mode = "v"
+})
+
 -- Leader based menu
--- wk.register({}, {
---     prefix = "<leader>"
--- })
+wk.register({
+    t = {
+        name = "telescope",
+        ['.'] = {"<cmd>TelescopeDotFiles<cr>", "dot files"},
+        b = {"<cmd>Telescope buffers<cr>", "buffers"},
+        f = {"<cmd>Telescope find_files<cr>", "find files"},
+        l = {"<cmd>Telescope live_grep<cr>", "live grep"},
+        p = {"<cmd>TelescopeProjects<cr>", "projects"},
+        t = {"<cmd>Telescope builtin<cr>", "builtin"}
+    },
+    g = {
+        name = "git",
+        c = {"<cmd>Git commit<cr>", "commit"},
+        b = {u.create_branch, "create branch"},
+        p = {"<cmd>Git pull", "pull"},
+        s = {"<cmd>Telescope git_branches<cr>", "switch branch"},
+        l = {
+            name = "lists (telescope)",
+            c = {"<cmd>Telescope git_commits<cr>", "commits"},
+            l = {"<cmd>Telescope git_bcommits<cr>", "branch commits"},
+            b = {"<cmd>Telescope git_branches<cr>", "branches"},
+            t = {"<cmd>Telescope git_status<cr>", "status"},
+            s = {"<cmd>Telescope git_stash<cr>", "stashes"}
+        }
 
--- delete current file and buffer
--- u.command("Remove", "call delete(expand('%')) | bdelete")
+    },
+    d = {
+        name = "diagnostics",
+        t = {"<cmd>TroubleToggle<cr>", "toggle trouble panel"},
+        r = {"DiagnosticsReset", "reset diagnostics"}
+    }
+}, {
+    prefix = "<leader>"
+})
 
--- get help for word under cursor
--- u.command("Help", 'execute ":help" expand("<cword>")')
-
--- reset treesitter and lsp diagnostics
--- u.command("R", "w | :e")

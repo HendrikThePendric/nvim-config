@@ -27,6 +27,7 @@ return require("packer").startup(function()
             require("plugins.matchup")
         end
     }) -- improves %, now with treesitter
+    use('roxma/vim-window-resize-easy') -- repeat window resize commands
 
     -- additional functionality
     use {
@@ -152,17 +153,16 @@ return require("packer").startup(function()
     use 'svermeulen/vim-yoink'
     use 'famiu/nvim-reload'
     use 'tonchis/vim-to-github'
-
+    use 'tpope/vim-obsession'
+    use 't9md/vim-choosewin'
+    use 'tpope/vim-repeat'
     -- WhichKey
     use {
-        -- "folke/which-key.nvim",
-        "zeertzjq/which-key.nvim",
+        "folke/which-key.nvim",
         event = "VimEnter",
         config = function()
             require("plugins.which-key")
-        end,
-        branch = "patch-1"
-        -- using fork until this is merged https://github.com/folke/which-key.nvim/pull/227
+        end
     }
 
     -- themes

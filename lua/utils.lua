@@ -23,10 +23,6 @@ for _, mode in ipairs({"n", "o", "i", "x", "t"}) do
     end
 end
 
-M.bang_map = function(target, source, opts)
-    api.nvim_set_keymap("!", target, source, get_map_options(opts))
-end
-
 M.buf_map = function(bufnr, mode, target, source, opts)
     api.nvim_buf_set_keymap(bufnr or 0, mode, target, source, get_map_options(opts))
 end
@@ -108,6 +104,21 @@ M.get_substring_from_end_slash = function(str, level, fallback_str)
     end
 
     return outpuStr
+end
+
+M.create_branch = function()
+    local on_confirm = function(input)
+        -- Clear prompt
+        vim.cmd("redraw")
+        if input == nil then
+            print('Branch creation aborted')
+        else
+            vim.cmd("Git checkout -b " .. input)
+        end
+    end
+    vim.ui.input({
+        prompt = "Name for new branch: "
+    }, on_confirm)
 end
 
 return M
