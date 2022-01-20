@@ -105,6 +105,7 @@ wk.register({
     },
     g = {
         name = "git",
+        h = "hunks",
         c = {"<cmd>Git commit<cr>", "commit"},
         b = {u.create_branch, "create branch"},
         p = {"<cmd>Git pull", "pull"},

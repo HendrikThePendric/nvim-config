@@ -16,16 +16,19 @@ require("gitsigns").setup({
             "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'"
         },
 
-        ['n <leader>hs'] = '<cmd>Gitsigns stage_hunk<CR>',
-        ['v <leader>hs'] = ':Gitsigns stage_hunk<CR>',
-        ['n <leader>hu'] = '<cmd>Gitsigns undo_stage_hunk<CR>',
-        ['n <leader>hr'] = '<cmd>Gitsigns reset_hunk<CR>',
-        ['v <leader>hr'] = ':Gitsigns reset_hunk<CR>',
-        ['n <leader>hR'] = '<cmd>Gitsigns reset_buffer<CR>',
-        ['n <leader>hp'] = '<cmd>Gitsigns preview_hunk<CR>',
-        ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line{full=true}<CR>',
-        ['n <leader>hS'] = '<cmd>Gitsigns stage_buffer<CR>',
-        ['n <leader>hU'] = '<cmd>Gitsigns reset_buffer_index<CR>',
+        ['n <leader>gR'] = '<cmd>Gitsigns reset_buffer<CR>',
+        ['n <leader>gL'] = '<cmd>Gitsigns toggle_current_line_blame<CR>',
+        ['n <leader>gB'] = '<cmd>lua require"gitsigns".blame_line{full=true}<CR>',
+
+        -- Hunks
+        ['n <leader>ghs'] = '<cmd>Gitsigns stage_hunk<CR>',
+        ['v <leader>ghs'] = ':Gitsigns stage_hunk<CR>',
+        ['n <leader>ghu'] = '<cmd>Gitsigns undo_stage_hunk<CR>',
+        ['n <leader>ghr'] = '<cmd>Gitsigns reset_hunk<CR>',
+        ['v <leader>ghr'] = ':Gitsigns reset_hunk<CR>',
+        ['n <leader>ghp'] = '<cmd>Gitsigns preview_hunk<CR>',
+        ['n <leader>ghS'] = '<cmd>Gitsigns stage_buffer<CR>',
+        ['n <leader>ghU'] = '<cmd>Gitsigns reset_buffer_index<CR>',
 
         -- Text objects
         ['o ih'] = ':<C-U>Gitsigns select_hunk<CR>',

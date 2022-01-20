@@ -1,7 +1,6 @@
 local u = require("utils")
 
 require("Comment").setup({
-    sticky = false,
     -- integrate with nvim-ts-context-commentstring
     pre_hook = function(ctx)
         if not vim.tbl_contains({"typescript", "typescriptreact"}, vim.bo.ft) then

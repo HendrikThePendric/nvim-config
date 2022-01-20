@@ -8,7 +8,7 @@ local u = require("utils")
     - DONE Illuminate keybindings
     - DONE Comment keybindings
     - Hop keybindings
-    - Telescope keybindings
+    - DONE Telescope keybindings
     - DONE GitSigns + Git fugitive keybindings
     - CMP keybindings
     - LSP keybindings
@@ -40,6 +40,9 @@ vim.opt.timeoutlen = 100
 vim.opt.shortmess:append("cA")
 vim.opt.clipboard:append("unnamedplus")
 vim.opt.autoindent = false
+-- performance
+vim.opt.ttyfast = true
+vim.opt.lazyredraw = true
 
 vim.cmd("autocmd BufEnter * setlocal formatoptions-=cro")
 
