@@ -79,7 +79,9 @@ require('lualine').setup {
         lualine_c = {{
             'filename',
             fmt = function(fallback_str)
-                return u.get_substring_from_end_slash(vim.api.nvim_buf_get_name(0), 1, fallback_str)
+                local name = vim.api.nvim_buf_get_name(0)
+                local short_name = u.split_string(name, "/", 1, true)
+                return short_name or fallback_str
             end
         }},
         lualine_x = {'encoding', 'filetype'}

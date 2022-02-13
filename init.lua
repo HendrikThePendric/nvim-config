@@ -14,6 +14,7 @@ local u = require("utils")
     - LSP keybindings
     - Subversive + abolish + yoink keybindings
     - DONE Window management keybindings
+    - DONE Use tmux for project sessions and intergrate with custom telescope project switcher
 --]]
 
 vim.g.mapleader = " "

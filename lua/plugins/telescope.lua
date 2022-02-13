@@ -1,5 +1,4 @@
 local telescope = require("telescope")
-local utils = require('utils')
 local actions = require('telescope.actions')
 local pickers = require('telescope.pickers')
 local finders = require('telescope.finders')
@@ -67,28 +66,57 @@ telescope.setup({
 telescope.load_extension('fzf')
 telescope.load_extension('file_browser')
 
--- Custom pickers and their helpers
+-- -- Custom pickers and their helpers
 function get_project_folders()
     local results = {}
-    local p = io.popen('ls -d ~/apps/*') -- Open directory look for files, save data in p. By giving '-type f' as parameter, it returns all direcotires.     
-    for folder in p:lines() do -- Loop through all files
-        local name = utils.get_substring_from_end_slash(folder, 0)
+    local p = io.popen('ls -d ~/apps/*')
+
+    for folder in p:lines() do
+        local name = u.split_string(folder, '/', 0, true)
         table.insert(results, {name, folder})
     end
     return results
 end
 
-function get_name_and_full_path(action_state)
-    local selection = action_state.get_selected_entry()
-    return unpack(selection.value)
+function has_tmux_session(project_name)
+    local found = false
+    local s = io.popen('tmux list-sessions')
+
+    for session in s:lines() do
+        local session_name = u.split_string(session, ":", 0)
+
+        if session_name == project_name then
+            found = true
+            break
+        end
+    end
+
+    return found
 end
 
-function project_browser(opts)
+function create_or_attach_tmux_session(action_state)
+    local selection = action_state.get_selected_entry()
+    local name, full_path = unpack(selection.value)
+    local open_window_cmd = "kitty @ new-window --window-type os --cwd " .. full_path .. " --title " .. name
+
+    if (has_tmux_session(name)) then
+        -- Load session
+        local load_session_cmd = open_window_cmd .. " tmux attach-session -t " .. name
+        vim.fn.jobstart(load_session_cmd)
+    else
+        -- New session
+        local new_session_cmd = open_window_cmd .. " tmux new-session -s " .. name .. " nvim"
+        vim.fn.jobstart(new_session_cmd)
+    end
+end
+
+function browse_projects(opts)
     opts = opts or {}
     pickers.new(opts, {
         prompt_title = "Projects",
         finder = finders.new_table {
             results = get_project_folders(),
+
             entry_maker = function(entry)
                 return {
                     value = entry,
@@ -100,32 +128,27 @@ function project_browser(opts)
         sorter = conf.generic_sorter(opts),
         attach_mappings = function(prompt_bufnr, map)
             -- Open project in new kitty OS window
+            -- AKA "Open new project"
             actions.select_default:replace(function()
                 actions.close(prompt_bufnr)
-
-                local name, full_path = get_name_and_full_path(action_state)
-                local cmd = 'kitty @ new-window --window-type os --cwd ' .. full_path .. ' --title ' .. name .. ' nvim'
-
-                vim.fn.jobstart(cmd)
+                create_or_attach_tmux_session(action_state)
             end)
 
-            -- Switch to new project in current kitty OS window
+            -- Open project in new kitty OS window and close current
+            -- AKA "Switch to project"
             map("i", "<M-CR>", function()
                 actions.close(prompt_bufnr)
 
-                local name, full_path = get_name_and_full_path(action_state)
+                -- Open new
+                create_or_attach_tmux_session(action_state)
+                -- Close current
+                local current_dir = os.getenv("PWD") or io.popen("cd"):read()
+                vim.fn.jobstart("kitty @ close-window --match cwd:" .. current_dir)
 
-                -- Clear all buffers
-                for index, buff_nr in ipairs(vim.api.nvim_list_bufs()) do
-                    -- Will fail if any dirty buffers are present and that's good
-                    vim.api.nvim_buf_delete(buff_nr, {})
+                local curr_project_name = u.split_string(current_dir, "/", 0, true)
+                if (has_tmux_session(curr_project_name)) then
+                    vim.fn.jobstart("tmux detach")
                 end
-
-                -- Set cwd to project path
-                vim.api.nvim_set_current_dir(full_path)
-
-                -- Update window title
-                vim.fn.jobstart('kitty @ set-window-title ' .. name)
             end)
             return true
         end
@@ -144,33 +167,14 @@ end
 
 -- Expose custom pickers as globals for `lua_command()`
 global.telescope_custom = {
-    project_browser = project_browser,
-    search_dotfiles = search_dotfiles
+    search_dotfiles = search_dotfiles,
+    browse_projects = browse_projects
 }
 
--- Key bindings
-u.lua_command("TelescopeProjects", "global.telescope_custom.project_browser()")
+-- Commands for custom functions
+u.lua_command("TelescopeProjects", "global.telescope_custom.browse_projects()")
 u.lua_command("TelescopeDotFiles", "global.telescope_custom.search_dotfiles()")
-
-u.command("Files", "Telescope find_files")
-u.command("Rg", "Telescope live_grep")
-u.command("BLines", "Telescope current_buffer_fuzzy_find")
-u.command("History", "Telescope oldfiles")
-u.command("Buffers", "Telescope buffers")
-u.command("BCommits", "Telescope git_bcommits")
-u.command("Commits", "Telescope git_commits")
-u.command("HelpTags", "Telescope help_tags")
-u.command("ManPages", "Telescope man_pages")
-
--- u.nmap("<Leader>ff", "<cmd>Files<CR>")
--- u.nmap("<Leader>fs", "<cmd>Rg<CR>")
--- u.nmap("<Leader>fo", "<cmd>History<CR>")
--- u.nmap("<Leader>fh", "<cmd>HelpTags<CR>")
--- u.nmap("<Leader>fl", "<cmd>BLines<CR>")
--- u.nmap("<Leader>fc", "<cmd>BCommits<CR>")
--- u.nmap("<leader>fp", "<cmd>Projects<CR>")
--- u.nmap("<leader>fv", "<cmd>DotFiles<CR>")
--- u.nmap("<LocalLeader><LocalLeader>", "<cmd>Buffers<CR>")
+u.lua_command("TelescopeTest", "global.telescope_custom.test()")
 
 -- lsp
 u.command("LspRef", "Telescope lsp_references")

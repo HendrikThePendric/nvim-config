@@ -82,28 +82,34 @@ M.get_system_output = function(cmd)
     return vim.split(vim.fn.system(cmd), "\n")
 end
 
-M.get_substring_from_end_slash = function(str, level, fallback_str)
-    level = level or 1
-    fallback_str = fallback_str or 'No output string provided'
-    local curr_level = 0
-    local outpuStr = ''
-    local reversedStr = string.reverse(str)
+M.split_string = function(str, delimiter, occurance, reverse)
+    occurance = occurance or 1
+    reverse = reverse or false
 
-    for c in reversedStr:gmatch "." do
-        if (c == "/") then
-            curr_level = curr_level + 1
+    local splitted_str = ''
+    local curr_occurance = 0
+
+    if (reverse) then
+        str = string.reverse(str)
+    end
+
+    for c in str:gmatch "." do
+        if (c == delimiter) then
+            curr_occurance = curr_occurance + 1
         end
-        if (curr_level > level) then
+
+        if (curr_occurance > occurance) then
             break
         end
-        outpuStr = c .. outpuStr
+
+        if (reverse) then
+            splitted_str = c .. splitted_str
+        else
+            splitted_str = splitted_str .. c
+        end
     end
 
-    if (outpuStr == '') then
-        return fallback_str
-    end
-
-    return outpuStr
+    return splitted_str
 end
 
 M.create_branch = function()

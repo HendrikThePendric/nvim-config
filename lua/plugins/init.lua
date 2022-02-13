@@ -153,7 +153,6 @@ return require("packer").startup(function()
     use 'svermeulen/vim-yoink'
     use 'famiu/nvim-reload'
     use 'tonchis/vim-to-github'
-    use 'tpope/vim-obsession'
     use 't9md/vim-choosewin'
     use 'tpope/vim-repeat'
     -- WhichKey
