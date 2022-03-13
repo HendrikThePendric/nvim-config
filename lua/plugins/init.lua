@@ -52,13 +52,6 @@ return require("packer").startup(function()
         end
     }) -- snippets
     use({
-        "xolox/vim-session",
-        requires = {"xolox/vim-misc"},
-        config = function()
-            require("plugins.session")
-        end
-    }) -- sessions
-    use({
         "windwp/nvim-autopairs",
         config = function()
             require("plugins.autopairs")
