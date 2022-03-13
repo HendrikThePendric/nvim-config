@@ -32,7 +32,6 @@ return require("packer").startup(function()
     -- additional functionality
     use {
         'phaazon/hop.nvim',
-        branch = 'v1', -- optional but strongly recommended
         config = function()
             -- you can configure Hop the way you like here; see :h hop-config
             require'hop'.setup()
@@ -52,6 +51,13 @@ return require("packer").startup(function()
             require("plugins.vsnip")
         end
     }) -- snippets
+    use({
+        "xolox/vim-session",
+        requires = {"xolox/vim-misc"},
+        config = function()
+            require("plugins.session")
+        end
+    }) -- sessions
     use({
         "windwp/nvim-autopairs",
         config = function()

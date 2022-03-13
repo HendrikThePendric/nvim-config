@@ -34,14 +34,24 @@ wk.setup({
     key_labels = {
         ["<cr>"] = "<enter>",
         ["<c-w>"] = "<ctrl-w>",
+        ["<C-_>"] = "<ctrl-/>",
         ["<C-L>"] = "<ctrl-l>",
         ["<M-n>"] = "<option-n>",
-        ["<M-p>"] = "<option-p>"
+        ["<M-p>"] = "<option-p>",
+        ["<M-h>"] = "<option-h>"
     }
 })
 
--- Make some labels look prettier (NORMAL mode)
 wk.register({
+    -- Hide
+    ["<C-H>"] = {"which_key_ignore"},
+    ["<C-K>"] = {"which_key_ignore"},
+    ["<C-S>"] = {"which_key_ignore"},
+    ["<NL>"] = {"which_key_ignore"},
+    ["<80>"] = {"which_key_ignore"},
+    -- Make labels look pretty
+    ["Y"] = {"yank until line end"},
+    ["<C-_>"] = {"toggle line comment"},
     ["<M-n>"] = {"illuminate next reference"},
     ["<M-p>"] = {"illuminate previous reference"},
     ["<2-LeftMouse>"] = {"matchup double click"},
@@ -57,6 +67,9 @@ wk.register({
         name = "block comment",
         c = {"toggle block comment"}
     },
+    ["<C-w>_"] = {"Maximize window"},
+    -- Some actual mappings
+    ["<M-h>"] = {"<cmd>HopChar2<cr>", "hop 2 char mode"},
     ["<C-w>p"] = {"<Plug>(choosewin)", "Pick window"},
     ["<C-w>n"] = {
         name = "new layout",
@@ -70,12 +83,12 @@ wk.register({
             ["2"] = {"<cmd>only|bufdo bwipeout|vs n|10:split|terminal<cr>", "2 columns"},
             ["3"] = {"<cmd>only|bufdo bwipeout|vs n|vs n|10:split|terminal<cr>", "3 columns"}
         }
-    },
-    ["<C-w>_"] = {"Maximize window"}
+    }
 })
 
 -- Make some Treesitter text-objects labels look prettier (VISUAL mode)
 wk.register({
+    ["<M-h>"] = {"<cmd>HopChar2<cr>", "hop 2 char mode"},
     ["vif"] = {"select inner function"},
     ["vic"] = {"select inner class"},
     ["vaf"] = {"select outer function"},

@@ -66,18 +66,6 @@ telescope.setup({
 telescope.load_extension('fzf')
 telescope.load_extension('file_browser')
 
--- -- Custom pickers and their helpers
-function get_project_folders()
-    local results = {}
-    local p = io.popen('ls -d ~/apps/*')
-
-    for folder in p:lines() do
-        local name = u.split_string(folder, '/', 0, true)
-        table.insert(results, {name, folder})
-    end
-    return results
-end
-
 function has_tmux_session(project_name)
     local found = false
     local s = io.popen('tmux list-sessions')
@@ -110,12 +98,129 @@ function create_or_attach_tmux_session(action_state)
     end
 end
 
+-- TMUX STUFF
+--[[
+attach_mappings = function(prompt_bufnr, map)
+    -- Open project in new kitty OS window
+    -- AKA "Open new project"
+    actions.select_default:replace(function()
+        actions.close(prompt_bufnr)
+        create_or_attach_tmux_session(action_state)
+    end)
+
+    -- Open project in new kitty OS window and close current
+    -- AKA "Switch to project"
+    map("i", "<M-CR>", function()
+        actions.close(prompt_bufnr)
+
+        -- Open new
+        create_or_attach_tmux_session(action_state)
+        -- Close current
+        local current_dir = os.getenv("PWD") or io.popen("cd"):read()
+        vim.fn.jobstart("kitty @ close-window --match cwd:" .. current_dir)
+
+        local curr_project_name = u.split_string(current_dir, "/", 0, true)
+        if (has_tmux_session(curr_project_name)) then
+            vim.fn.jobstart("tmux detach")
+        end
+    end)
+    return true
+end
+]]
+
+--[[
+    ***** Projects with vim sessions *****
+    - Avalaible parameters: 
+        * project dir
+        * session dir
+        * current project/dir
+        * next project/dir
+     - Always - before:
+        * Save current session with `SaveSession ${current_project_name}`
+    - Scenario: New window      | new session
+        * Open new kitty os-window
+        * Set kitty os-window CWD to project dir
+        * Set kitty os-window title to project name
+        * Start nvim with `SaveSession ${next_project_name}` command
+    - Scenario: Current window  | open session
+        * Close current session
+        * Set kitty os-window CWD to project dir
+        * Set kitty os-window title to project name
+        * Start nvim with `OpenSession ${next_project_name}` command
+    - Scenario: New window      | open session
+        * Open new kitty os-window
+        * Set kitty os-window CWD to project dir
+        * Set kitty os-window title to project name
+        * Start nvim with `OpenSession ${next_project_name}` command
+    - Scenario: Current window  | new session
+        * Close current session
+        * Set kitty os-window CWD to project dir
+        * Set kitty os-window title to project name
+        * Start nvim with `SaveSession ${next_project_name}` command
+
+    Functions:
+    -> save_current_session
+        * Save current session with `SaveSession ${current_project_name}`
+    -> create_kitty_window
+        * Open new kitty os-window
+        * Set kitty os-window CWD to project dir
+        * Set kitty os-window title to project name
+    -> update_kitty_window
+        * Close current session
+        * Set kitty os-window CWD to project dir
+        * Set kitty os-window title to project name
+    -> create_nvim_session
+        * Start nvim with `SaveSession ${next_project_name}` command
+    -> open_vim_session
+        * Start nvim with `OpenSession ${next_project_name}` command
+]]
+
+function update_kitty_window(current_project_name, next_project_name, next_project_dir)
+    -- * Close current session
+    if (u.has_session(current_project_name)) then
+        vim.cmd("CloseSession " .. current_project_name)
+    end
+    -- * Set kitty os-window CWD to project dir
+    -- * Set kitty os-window title to project name
+end
+
+function create_nvim_session(next_project_name)
+    -- * Start nvim with `SaveSession ${next_project_name}` command
+    vim.cmd("SaveSession " .. next_project_name)
+end
+
+function open_vim_session(next_project_name)
+    -- * Start nvim with `OpenSession ${next_project_name}` command
+    vim.cmd("OpenSession " .. next_project_name)
+end
+
+-- BELOW WORKS
+
+function open_nvim_with_session_cmd(project_name)
+    return "nvim -S " .. u.get_project_session_path(project_name)
+end
+
+function get_next_project_name_and_path()
+    local selection = action_state.get_selected_entry()
+    return unpack(selection.value)
+end
+
+function save_current_session(current_project_name)
+    if u.has_session(current_project_name) then
+        vim.cmd("SaveSession " .. current_project_name)
+    end
+end
+
+function create_kitty_window_cmd(project_name, project_dir)
+    return "kitty @ new-window --window-type os --cwd " .. project_dir .. " --title " .. project_name
+end
+
 function browse_projects(opts)
     opts = opts or {}
     pickers.new(opts, {
         prompt_title = "Projects",
         finder = finders.new_table {
-            results = get_project_folders(),
+            results = u.get_project_dirs(),
 
             entry_maker = function(entry)
                 return {
@@ -131,24 +236,77 @@ function browse_projects(opts)
             -- AKA "Open new project"
             actions.select_default:replace(function()
                 actions.close(prompt_bufnr)
-                create_or_attach_tmux_session(action_state)
+                local current_project_name = u.get_current_dir_name()
+                local next_project_name, next_project_dir = get_next_project_name_and_path()
+                local next_session_path = u.get_project_session_path(next_project_name)
+                local new_window_cmd = create_kitty_window_cmd(next_project_name, next_project_dir)
+
+                save_current_session(current_project_name)
+                vim.fn.jobstart(new_window_cmd .. " nvim -S " .. next_session_path)
+
+                -- if (u.has_session(next_project_name)) then
+                --     vim.fn.jobstart(new_window_cmd .. " " .. open_nvim_with_session_cmd(next_project_name))
+                -- else
+                --     vim.fn.jobstart(new_window_cmd .. " nvim")
+                --     -- TODO: no session yet. It will be created when switching, 
+                --     -- but it'd be better if it could be saved on open
+                -- end
+
+                -- local send_text_cmd = "kitty @ send-text --match title:" .. next_project_name
+                -- local open_vim_session_cmd = ' nvim -c ""OpenSession ""' .. next_project_name .. '"'
+                -- -- local open_vim_session_cmd = " ls"
+                -- print(vim.inspect("test"))
+                -- vim.fn.jobstart(send_text_cmd .. open_vim_session_cmd)
+
+                -- if has_session(next_project_name) then
+                --     local send_text_cmd = "kitty @ send-text --match title:" .. next_project_name
+                --     -- local open_vim_session_cmd = " nvim \"OpenSession " .. next_project_name .. "\""
+                --     local open_vim_session_cmd = " ls"
+                --     vim.fn.jobstart(send_text_cmd .. open_vim_session_cmd)
+                -- else
+                -- create_nvim_session(next_project_name)
+                -- end
+
+                -- - Scenario: Current window  | open session
+                --     * Close current session
+                --     * Set kitty os-window CWD to project dir
+                --     * Set kitty os-window title to project name
+                --     * Start nvim with `OpenSession ${next_project_name}` command
+                -- - Scenario: Current window  | new session
+                --     * Close current session
+                --     * Set kitty os-window CWD to project dir
+                --     * Set kitty os-window title to project name
+                --     * Start nvim with `SaveSession ${next_project_name}` command
             end)
 
             -- Open project in new kitty OS window and close current
             -- AKA "Switch to project"
             map("i", "<M-CR>", function()
                 actions.close(prompt_bufnr)
+                local current_project_name = u.get_current_dir_name()
+                local next_project_name, next_project_dir = get_next_project_name_and_path()
 
-                -- Open new
-                create_or_attach_tmux_session(action_state)
-                -- Close current
-                local current_dir = os.getenv("PWD") or io.popen("cd"):read()
-                vim.fn.jobstart("kitty @ close-window --match cwd:" .. current_dir)
+                update_kitty_window()
 
-                local curr_project_name = u.split_string(current_dir, "/", 0, true)
-                if (has_tmux_session(curr_project_name)) then
-                    vim.fn.jobstart("tmux detach")
+                if u.has_session(next_project_name) then
+                    print(vim.inspect('Open session in current window'))
+                else
+                    print(vim.inspect('Start session in current window'))
                 end
+
+                -- create_kitty_window(next_project_name, next_project_dir)
+
+                -- - Scenario: New window      | new session
+                -- * Open new kitty os-window
+                -- * Set kitty os-window CWD to project dir
+                -- * Set kitty os-window title to project name
+                -- * Start nvim with `SaveSession ${next_project_name}` command
+                -- - Scenario: New window      | open session
+                -- * Open new kitty os-window
+                -- * Set kitty os-window CWD to project dir
+                -- * Set kitty os-window title to project name
+                -- * Start nvim with `OpenSession ${next_project_name}` command
+
             end)
             return true
         end
@@ -168,13 +326,14 @@ end
 -- Expose custom pickers as globals for `lua_command()`
 global.telescope_custom = {
     search_dotfiles = search_dotfiles,
-    browse_projects = browse_projects
+    browse_projects = browse_projects,
+    has_session = u.has_session
 }
 
 -- Commands for custom functions
+u.lua_command("TelescopeTest", "global.telescope_custom.has_session('analytics')")
 u.lua_command("TelescopeProjects", "global.telescope_custom.browse_projects()")
 u.lua_command("TelescopeDotFiles", "global.telescope_custom.search_dotfiles()")
-u.lua_command("TelescopeTest", "global.telescope_custom.test()")
 
 -- lsp
 u.command("LspRef", "Telescope lsp_references")

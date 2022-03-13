@@ -7,14 +7,14 @@ local u = require("utils")
     - DONE Replace textsubjects with nvim-treesitter/nvim-treesitter-textobjects
     - DONE Illuminate keybindings
     - DONE Comment keybindings
-    - Hop keybindings
-    - DONE Telescope keybindings
-    - DONE GitSigns + Git fugitive keybindings
-    - CMP keybindings
-    - LSP keybindings
-    - Subversive + abolish + yoink keybindings
     - DONE Window management keybindings
     - DONE Use tmux for project sessions and intergrate with custom telescope project switcher
+    - DONE Telescope keybindings
+    - DONE GitSigns + Git fugitive keybindings
+    - Hop keybindings
+    - CMP keybindings / Switch to cmp-nvim-lsp-signature-help / Switch to luasnip /see tj video
+    - LSP keybindings
+    - Subversive + abolish + yoink keybindings
 --]]
 
 vim.g.mapleader = " "
@@ -80,3 +80,7 @@ require("lsp")
 -- vim.cmd [[colorscheme everforest]]
 vim.g.tokyonight_style = "storm"
 vim.cmd [[colorscheme tokyonight]]
+
+vim.api.nvim_create_autocmd("VimEnter", {
+    callback = u.init_session_and_finder
+})
