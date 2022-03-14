@@ -111,6 +111,7 @@ wk.register({
         name = "telescope",
         ['.'] = {"<cmd>TelescopeDotFiles<cr>", "dot files"},
         b = {"<cmd>Telescope buffers<cr>", "buffers"},
+        s = {"<cmd>SearchSession<cr>", "sessions"},
         f = {"<cmd>Telescope find_files<cr>", "find files"},
         l = {"<cmd>Telescope live_grep<cr>", "live grep"},
         t = {"<cmd>Telescope builtin<cr>", "builtin"}

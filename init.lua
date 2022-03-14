@@ -80,7 +80,3 @@ require("lsp")
 -- vim.cmd [[colorscheme everforest]]
 vim.g.tokyonight_style = "storm"
 vim.cmd [[colorscheme tokyonight]]
-
-vim.api.nvim_create_autocmd("VimEnter", {
-    callback = u.init_session_and_finder
-})

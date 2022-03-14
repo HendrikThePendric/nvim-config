@@ -51,6 +51,19 @@ return require("packer").startup(function()
             require("plugins.vsnip")
         end
     }) -- snippets
+    use {
+        'rmagatti/auto-session',
+        config = function()
+            require("plugins.auto-session")
+        end
+    } -- session management
+    use {
+        'rmagatti/session-lens',
+        requires = {'rmagatti/auto-session', 'nvim-telescope/telescope.nvim'},
+        config = function()
+            require('session-lens').setup()
+        end
+    }
     use({
         "windwp/nvim-autopairs",
         config = function()

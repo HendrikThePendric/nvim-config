@@ -11,14 +11,16 @@ local u = require("utils")
 telescope.setup({
     defaults = {
         layout_config = {
-            width = 0.95,
-            prompt_position = "top",
-            preview_width = 0.55,
             horizontal = {
-                mirror = false
-            },
-            vertical = {
-                mirror = false
+                width = 0.95,
+                prompt_position = "top",
+                preview_width = 0.55,
+                horizontal = {
+                    mirror = false
+                },
+                vertical = {
+                    mirror = false
+                }
             }
         },
         sorting_strategy = "ascending",
@@ -63,8 +65,9 @@ telescope.setup({
 
 })
 
-telescope.load_extension('fzf')
-telescope.load_extension('file_browser')
+telescope.load_extension("fzf")
+telescope.load_extension("file_browser")
+telescope.load_extension("session-lens")
 
 function search_dotfiles()
     local b = require('telescope.builtin')
