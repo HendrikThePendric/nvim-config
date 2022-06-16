@@ -11,9 +11,10 @@ local u = require("utils")
     - DONE Use tmux for project sessions and intergrate with custom telescope project switcher
     - DONE Telescope keybindings
     - DONE GitSigns + Git fugitive keybindings
-    - Hop keybindings
-    - CMP keybindings / Switch to cmp-nvim-lsp-signature-help / Switch to luasnip /see tj video
-    - LSP keybindings
+    - DONE Hop keybindings
+    - DONE CMP keybindings / Switch to cmp-nvim-lsp-signature-help / 
+    - DONE Switch to luasnip /see tj video
+    - LSP keybindings / fix html, CSS, CSS modules support (UPGRADE NODE TO V17)
     - Subversive + abolish + yoink keybindings
 --]]
 
@@ -40,7 +41,7 @@ vim.opt.signcolumn = "yes"
 vim.opt.timeoutlen = 100
 vim.opt.shortmess:append("cA")
 vim.opt.clipboard:append("unnamedplus")
-vim.opt.autoindent = false
+vim.opt.autoindent = true
 -- performance
 vim.opt.ttyfast = true
 vim.opt.lazyredraw = true

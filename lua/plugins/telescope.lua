@@ -10,6 +10,7 @@ local u = require("utils")
 -- Setup
 telescope.setup({
     defaults = {
+        file_ignore_patterns = {"node_modules"},
         layout_config = {
             horizontal = {
                 width = 0.95,

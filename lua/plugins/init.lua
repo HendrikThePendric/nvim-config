@@ -44,13 +44,8 @@ return require("packer").startup(function()
         end
     }) -- adds substitute operator
     use("tpope/vim-abolish") -- case perserving substitutions
-    use({
-        "hrsh7th/vim-vsnip",
-        requires = {"hrsh7th/vim-vsnip-integ"},
-        config = function()
-            require("plugins.vsnip")
-        end
-    }) -- snippets
+    use {'L3MON4D3/LuaSnip'}
+    use "rafamadriz/friendly-snippets" -- snippets
     use {
         'rmagatti/auto-session',
         config = function()
@@ -72,8 +67,8 @@ return require("packer").startup(function()
     }) -- autocomplete pairs
     use({
         "hrsh7th/nvim-cmp", -- completion
-        requires = {"hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-vsnip",
-                    "onsails/lspkind-nvim", "folke/lua-dev.nvim"},
+        requires = {"hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "saadparwaiz1/cmp_luasnip",
+                    "hrsh7th/cmp-nvim-lsp-signature-help", "onsails/lspkind-nvim", "folke/lua-dev.nvim"},
         config = function()
             require("plugins.cmp")
         end
@@ -101,6 +96,7 @@ return require("packer").startup(function()
     use("b0o/schemastore.nvim") -- simple access to json-language-server schemae
     use("jose-elias-alvarez/null-ls.nvim") -- transforms CLI output / Lua code into language server diagnostics, formatting, and more
     use("jose-elias-alvarez/nvim-lsp-ts-utils") -- improves TypeScript development experience
+    use("glepnir/lspsaga.nvim") -- pretty lsp
 
     -- treesitter
     use({
@@ -110,6 +106,7 @@ return require("packer").startup(function()
             require("plugins.treesitter")
         end
     })
+    use("nvim-treesitter/playground")
     use("nvim-treesitter/nvim-treesitter-textobjects")
     use({
         "windwp/nvim-ts-autotag",
