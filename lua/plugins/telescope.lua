@@ -47,6 +47,9 @@ telescope.setup({
                     ["<c-d>"] = "delete_buffer"
                 }
             }
+        },
+        find_files = {
+            hidden = true
         }
         -- git_branches = {
         --     mappings = {

@@ -1,4 +1,5 @@
 local u = require("utils")
+local lsp_utils = require("lsp.utils")
 
 local lsp = vim.lsp
 local api = vim.api
@@ -14,48 +15,10 @@ vim.diagnostic.config({
     float = border_opts
 })
 
-lsp.handlers["textDocument/signatureHelp"] = lsp.with(lsp.handlers.signature_help, border_opts)
-lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, border_opts)
-
--- use lsp formatting if it's available (and if it's good)
--- otherwise, fall back to null-ls
-local preferred_formatting_clients = {"denols", "eslint"}
-local fallback_formatting_client = "null-ls"
-
-local formatting = function()
-    local bufnr = api.nvim_get_current_buf()
-
-    local selected_client
-    for _, client in ipairs(lsp.get_active_clients()) do
-        if vim.tbl_contains(preferred_formatting_clients, client.name) then
-            selected_client = client
-            break
-        end
-
-        if client.name == fallback_formatting_client then
-            selected_client = client
-        end
-    end
-
-    if not selected_client then
-        return
-    end
-
-    local params = lsp.util.make_formatting_params()
-    local result, err = selected_client.request_sync("textDocument/formatting", params, 5000, bufnr)
-    if result and result.result then
-        lsp.util.apply_text_edits(result.result, bufnr)
-    elseif err then
-        vim.notify("global.lsp.formatting: " .. err, vim.log.levels.WARN)
-    end
-end
-
-global.lsp = {
-    border_opts = border_opts,
-    formatting = formatting
-}
-
 local on_attach = function(client, bufnr)
+    vim.keymap.set('n', '<leader>Lr', lsp_utils.nui_lsp_rename,
+        u.create_buf_keymap_opt_with_desc(bufnr, "rename symbol"))
+
     -- commands
     -- u.lua_command("LspFormatting", "vim.lsp.buf.formatting()")
     -- u.lua_command("LspHover", "vim.lsp.buf.hover()")
@@ -83,8 +46,8 @@ local on_attach = function(client, bufnr)
     -- u.buf_map(bufnr, "n", "ga", ":LspAct<CR>")
     -- u.buf_map(bufnr, "v", "ga", "<Esc><cmd> LspRangeAct<CR>")
 
-    if client.resolved_capabilities.document_formatting then
-        vim.cmd("autocmd BufWritePre <buffer> lua global.lsp.formatting()")
+    if client.resolved_capabilities.document_formatting and client.name == "null-ls" then
+        vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
     end
 
     if client.resolved_capabilities.signature_help then

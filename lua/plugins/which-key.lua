@@ -67,10 +67,10 @@ wk.register({
         name = "block comment",
         c = {"toggle block comment"}
     },
-    ["<C-w>_"] = {"Maximize window"},
+    ["<C-w>_"] = {"maximize window"},
     -- Some actual mappings
     ["<M-h>"] = {"<cmd>HopChar2<cr>", "hop 2 char mode"},
-    ["<C-w>p"] = {"<Plug>(choosewin)", "Pick window"},
+    ["<C-w>p"] = {"<Plug>(choosewin)", "pick window"},
     ["<C-w>n"] = {
         name = "new layout",
         b = {
@@ -107,16 +107,30 @@ wk.register({
 
 -- Leader based menu
 wk.register({
-    t = {
+    -- shortcuts for most used actions I want to access in a single keystroke (lower case)
+    b = {"<cmd>Telescope buffers<cr>", "switch buffer"},
+    f = {"<cmd>Telescope git_files<cr>", "find file"},
+    g = {"<cmd>Telescope live_grep<cr>", "live grep"},
+    c = {"<cmd>Git commit<cr>", "commit"},
+    d = {"<cmd>Telescope lsp_definitions<cr>", "go to definition"},
+    t = {"<cmd>TroubleToggle<cr>", "toggle trouble panel"},
+
+    -- nested menus / categorised actions (upper case)
+    T = {
         name = "telescope",
         ['.'] = {"<cmd>TelescopeDotFiles<cr>", "dot files"},
         b = {"<cmd>Telescope buffers<cr>", "buffers"},
         s = {"<cmd>SearchSession<cr>", "sessions"},
-        f = {"<cmd>Telescope find_files<cr>", "find files"},
+        f = {"<cmd>Telescope find_files<cr>", "files"},
+        F = {"<cmd>Telescope current_buffer_fuzzy_find<cr>", "find in file"},
+        g = {"<cmd>Telescope git_files<cr>", "git files"},
         l = {"<cmd>Telescope live_grep<cr>", "live grep"},
+        c = {"<cmd>Telescope command_history<cr>", "command history"},
+        h = {"<cmd>Telescope search_history<cr>", "search history"},
+        r = {"<cmd>Telescope resume<cr>", "resume"},
         t = {"<cmd>Telescope builtin<cr>", "builtin"}
     },
-    g = {
+    G = {
         name = "git",
         h = "hunks",
         c = {"<cmd>Git commit<cr>", "commit"},
@@ -133,10 +147,21 @@ wk.register({
         }
 
     },
-    d = {
+    D = {
         name = "diagnostics",
         t = {"<cmd>TroubleToggle<cr>", "toggle trouble panel"},
         r = {"DiagnosticsReset", "reset diagnostics"}
+    },
+    L = {
+        name = "LSP",
+        i = {"<cmd>Telescope lsp_implementations<cr>", "implementations"},
+        d = {"<cmd>Telescope lsp_definitions<cr>", "definitions"},
+        t = {"<cmd>Telescope lsp_type_definitions<cr>", "type definitions"},
+        T = {
+            name = "TypeScript"
+            -- Commands in lua/lsp/tsserver.lua
+        }
+
     }
 }, {
     prefix = "<leader>"

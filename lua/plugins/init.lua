@@ -67,8 +67,9 @@ return require("packer").startup(function()
     }) -- autocomplete pairs
     use({
         "hrsh7th/nvim-cmp", -- completion
-        requires = {"hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "saadparwaiz1/cmp_luasnip",
-                    "hrsh7th/cmp-nvim-lsp-signature-help", "onsails/lspkind-nvim", "folke/lua-dev.nvim"},
+        requires = {"hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-cmdline",
+                    "saadparwaiz1/cmp_luasnip", "hrsh7th/cmp-nvim-lsp-signature-help", "onsails/lspkind-nvim",
+                    "folke/lua-dev.nvim"},
         config = function()
             require("plugins.cmp")
         end
@@ -142,6 +143,17 @@ return require("packer").startup(function()
         run = "cd app && yarn install",
         cmd = "MarkdownPreview"
     })
+    use {
+        'kevinhwang91/nvim-bqf',
+        ft = 'qf'
+    } -- better quickfix window
+    use {'MunifTanjim/nui.nvim'} -- nice ui
+    use {
+        'junegunn/fzf',
+        run = function()
+            vim.fn['fzf#install']()
+        end
+    } -- fuzzy search, recommended addition to nvim-bqf
 
     use 'folke/lsp-colors.nvim'
     use 'norcalli/nvim-colorizer.lua'

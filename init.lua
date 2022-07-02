@@ -21,7 +21,7 @@ local u = require("utils")
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-vim.opt.completeopt = {"menuone", "noinsert"}
+vim.opt.completeopt = {"menu", "menuone", "noselect"}
 vim.opt.showcmd = false
 vim.opt.ignorecase = true
 vim.opt.smartcase = true

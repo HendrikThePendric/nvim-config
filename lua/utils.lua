@@ -129,4 +129,13 @@ M.create_branch = function()
     }, on_confirm)
 end
 
+M.create_buf_keymap_opt_with_desc = function(bufnr, desc)
+    return {
+        noremap = true,
+        silent = true,
+        buffer = bufnr,
+        desc = desc
+    }
+end
+
 return M

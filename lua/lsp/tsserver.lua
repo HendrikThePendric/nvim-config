@@ -22,9 +22,18 @@ M.setup = function(on_attach, capabilities)
             ts_utils.setup(ts_utils_settings)
             ts_utils.setup_client(client)
 
-            -- u.buf_map(bufnr, "n", "gs", ":TSLspOrganize<CR>")
-            -- u.buf_map(bufnr, "n", "gI", ":TSLspRenameFile<CR>")
-            -- u.buf_map(bufnr, "n", "go", ":TSLspImportAll<CR>")
+            -- prefer prettier for formatting
+            client.resolved_capabilities.document_formatting = false
+
+            -- Keymaps with desc will be picked up by whichkey
+            vim.keymap.set('n', '<leader>LTo', ":TSLspOrganize<CR>",
+                u.create_buf_keymap_opt_with_desc(bufnr, "organise imports"))
+            vim.keymap.set('n', '<leader>LTr', ":TSLspRenameFile<CR>",
+                u.create_buf_keymap_opt_with_desc(bufnr, "rename file"))
+            vim.keymap.set('n', '<leader>LTa', ":TSLspImportAll<CR>",
+                u.create_buf_keymap_opt_with_desc(bufnr, "import all"))
+            vim.keymap.set('n', '<leader>LTc', ":TSLspImportCurrent<CR>",
+                u.create_buf_keymap_opt_with_desc(bufnr, "import current"))
         end,
         flags = {
             debounce_text_changes = 150
