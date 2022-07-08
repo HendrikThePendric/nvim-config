@@ -165,12 +165,6 @@ return require("packer").startup(function()
         end
     }
     use 'tpope/vim-fugitive'
-    -- use {
-    --     "AckslD/nvim-neoclip.lua",
-    --     config = function()
-    --         require('neoclip').setup()
-    --     end
-    -- } TRYING VIM_YOINK INSTEAD CAUSE THAT INTERGRATES WITH VIM-SUBVERSIVE
     use 'svermeulen/vim-yoink'
     use 'famiu/nvim-reload'
     use 'tonchis/vim-to-github'
