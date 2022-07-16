@@ -1,23 +1,5 @@
 local u = require("utils")
 
---[[
-    TODO:
-    - CANCELLED Try different version of which-key that works better
-    - DONE Re-review plugins and only keep ones that are 100% useful
-    - DONE Replace textsubjects with nvim-treesitter/nvim-treesitter-textobjects
-    - DONE Illuminate keybindings
-    - DONE Comment keybindings
-    - DONE Window management keybindings
-    - DONE Use tmux for project sessions and intergrate with custom telescope project switcher
-    - DONE Telescope keybindings
-    - DONE GitSigns + Git fugitive keybindings
-    - DONE Hop keybindings
-    - DONE CMP keybindings / Switch to cmp-nvim-lsp-signature-help / 
-    - DONE Switch to luasnip /see tj video
-    - LSP keybindings / fix html, CSS, CSS modules support (UPGRADE NODE TO V17)
-    - Subversive + abolish + yoink keybindings
---]]
-
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -81,3 +63,15 @@ require("lsp")
 -- vim.cmd [[colorscheme everforest]]
 vim.g.tokyonight_style = "storm"
 vim.cmd [[colorscheme tokyonight]]
+
+-- launch session-lens when neovim is opened from home dir without any args
+vim.api.nvim_create_autocmd("UIEnter", {
+    callback = function()
+        local cwd_is_home = vim.fn.getcwd() == os.getenv("HOME")
+        local without_args = vim.tbl_count(vim.v.argv) == 1
+
+        if (cwd_is_home and without_args) then
+            require('session-lens').search_session()
+        end
+    end
+})
