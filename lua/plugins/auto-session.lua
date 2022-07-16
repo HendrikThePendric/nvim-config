@@ -28,9 +28,29 @@ function update_kitty_window_title()
     vim.fn.jobstart(cmd)
 end
 
+function launch_file_browser_if_none_open()
+    local has_open_project_files = false
+    local cwd = vim.fn.getcwd()
+    local buffers = vim.api.nvim_list_bufs()
+
+    for _, buffnr in ipairs(buffers) do
+        local is_loaded = vim.api.nvim_buf_is_loaded(buffnr)
+        local file_name = vim.api.nvim_buf_get_name(buffnr)
+        local is_file_in_cwd = u.is_file_in_cwd(file_name)
+
+        if is_loaded and is_file_in_cwd then
+            has_open_project_files = true
+        end
+    end
+
+    if has_open_project_files == false then
+        require('telescope.builtin').git_files()
+    end
+end
+
 require('auto-session').setup {
     auto_session_root_dir = u.session_dir .. "/",
     auto_session_allowed_dirs = get_auto_session_allowed_dirs(),
-    post_restore_cmds = {update_kitty_window_title}
+    post_restore_cmds = {update_kitty_window_title, launch_file_browser_if_none_open}
 }
 

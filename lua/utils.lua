@@ -114,6 +114,22 @@ M.split_string = function(str, delimiter, occurance, reverse)
     return splitted_str
 end
 
+M.is_file_in_cwd = function(file_name)
+    local cwd = vim.fn.getcwd()
+    local is_match = true
+
+    for i = 1, #cwd do
+        local cwd_char = cwd:sub(i, i)
+        local file_name_char = file_name:sub(i, i)
+        if file_name_char ~= cwd_char then
+            is_match = false
+            break
+        end
+    end
+
+    return is_match
+end
+
 M.create_branch = function()
     local on_confirm = function(input)
         -- Clear prompt

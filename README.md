@@ -31,7 +31,7 @@ This describes how to find and open projects in NeoVim. In practice, for me, a "
 - [x] Configured `auto-session` to be enabled for project folders only. To achieve this I wrote a custom function that scans my `~/apps` folder, where all my projects live and I add a custom entry for my NeoVim config repo, which lives in my home directory.
 - [x] Configured `auto-session` to update the Kitty OS window title to the project name. This ensures I can see which project I am working on.
 - [x] The `session-lens` plugin allows me to switch to another project easily. The old session will be closed, so effectively I am opening a new project in the existing OS window.
-- [ ] Opening a project in a new window involve opening a new terminal window, starting NeoVim, then using session lens to select the project. It could be good to automatically open session lens when there is no session and NeoVim is started from the default dir. And perhaps also to open the Telescope file picker after that. 
+- [x] Opening a project in a new window involve opening a new terminal window, starting NeoVim, then using session lens to select the project. It could be good to automatically open session lens when there is no session and NeoVim is started from the default dir. And perhaps also to open the Telescope file picker after that. 
 - [x] Starting a new project isn't really covered explicitly, but that will usually involve `cd`ing into a dir, cloning a repo, etc. anyway, so I don't think that then issuing the `v` command to open NeoVim, which will then start a its whole auto-session workflow will work well enough.
 
 ### File navigation and management
