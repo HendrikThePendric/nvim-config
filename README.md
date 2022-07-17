@@ -44,9 +44,9 @@ This describes how to find and open projects in NeoVim. In practice, for me, a "
 
 #### Use cases and their implementations
 
-- [ ] Create/edit/delete files and directories and visually inspect the project directory structure: use both native Vim functionality and `nvim-tree.lua` (setup in vinegar style, see [docs section 4.1](https://github.com/kyazdani42/nvim-tree.lua/blob/master/doc/nvim-tree-lua.txt))
+- [x] Create/edit/delete files and directories and visually inspect the project directory structure: use both native Vim functionality and `nvim-tree.lua` (setup in vinegar style, see [docs section 4.1](https://github.com/kyazdani42/nvim-tree.lua/blob/master/doc/nvim-tree-lua.txt))
 - [x] Navigate to a file by name: Telescope `builtin.git_files`
-- [ ] Navigate to a related file, i.e. from a component to a CSS module or a test file: `jumpwire.nvim`
+- [ ] [DEFER] Navigate to a related file, i.e. from a component to a CSS module or a test file: `jumpwire.nvim`. (deferred because this would require project specific setup IMO and I don't think that's worth the effort)
 - [x] List open files (buffers) and select one: Telescope `builtin.buffers`
 
 ### Code navigation
@@ -96,7 +96,7 @@ This describes how to find and open projects in NeoVim. In practice, for me, a "
 
 - [x] Lint code: similar to formatting, linting should be independent of the editor. For JavaScript I use ESLint and the TypeScript language server and setup LSP bindings. The editor is responsible for showing visual cues in the editor, such as squiggly lines and signs in the gutter.
 - [ ] Run test and view results: run commands in terminal. This is a long running process and the output needs to be in view. This can done with `toggleterm.nvim` [custom terminal](https://github.com/akinsho/toggleterm.nvim#custom-terminal-usage).
-- [ ] Use `trouble.nvim` for showing diagnostics
+- [x] Use `trouble.nvim` for showing diagnostics
 - [ ] Use Telescope to show code actions from `vim.lsp.buf.code_action()`. `telescope-ui-select.nvim` seems the way to do this. `glepnir/lspsaga.nvim` should be removed.
 - [ ] Rename symbol, project wide
 - [ ] Fix/sort imports

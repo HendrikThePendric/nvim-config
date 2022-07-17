@@ -65,6 +65,14 @@ return require("packer").startup(function()
             require("plugins.autopairs")
         end
     }) -- autocomplete pairs
+    use {
+        'kyazdani42/nvim-tree.lua',
+        requires = {'kyazdani42/nvim-web-devicons'}, -- for file icons
+        tag = 'nightly',
+        config = function()
+            require("plugins.nvim-tree")
+        end
+    }
     use({
         "hrsh7th/nvim-cmp", -- completion
         requires = {"hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-cmdline",
